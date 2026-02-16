@@ -3,7 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ma25.fixmaster">
 
+    <!-- Kamera-permission -->
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Kamera är ett krav för appen (QR scanning) -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,18 +21,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FixMaster">
 
+        <!-- Launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
+        <!-- QR Scanner -->
         <activity
-            android:name=".UI.QrScannerActivity"
+            android:name=".ui.QrScannerActivity"
+            android:exported="false" />
+
+        <!-- Report screen -->
+        <activity
+            android:name=".ui.ReportActivity"
             android:exported="false" />
 
     </application>
+
 </manifest>

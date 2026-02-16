@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.UI
+package com.ma25.fixmaster.ui
 
 // TA BORT DENNA: import com.ma25.fixmaster.model.ReportObject
 // BEHÅLL DENNA:
