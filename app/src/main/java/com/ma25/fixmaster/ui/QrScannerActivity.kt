@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.UI
+package com.ma25.fixmaster.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ma25.fixmaster.R
