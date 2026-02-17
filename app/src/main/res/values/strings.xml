@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">FixMaster</string>
+    <string name="subtitle_scan">Skanna en QR-kod för att skapa en felanmälan</string>
+    <string name="scan_label">Skanna QR</string>
+    <string name="btn_dummy_report">Öppna dummyrapport</string>
+    <string name="cd_scan_qr">Skanna QR-kod</string>
+
+    <string name="report_object_prefix">Objekt: %1$s</string>
+
+    <string name="report_choose_fault">Välj en feltyp</string>
+    <string name="report_sent_thanks">Tack! Ärendet är skickat.</string>
+
+    <string name="report_send">Skicka</string>
+    <string name="report_sending">Skickar…</string>
+
+    <string name="fault_broken">Trasig</string>
+    <string name="fault_leak">Läckage</string>
+    <string name="fault_other">Annat</string>
 </resources>

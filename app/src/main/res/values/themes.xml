@@ -1,9 +1,32 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.FixMaster" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.FixMaster" parent="Theme.Material3.Dark.NoActionBar">
+
+        <!-- Appens bakgrund -->
+        <item name="android:windowBackground">@color/fm_background</item>
+
+        <!-- Material färger -->
+        <item name="colorPrimary">@color/fm_primary</item>
+        <item name="colorSecondary">@color/fm_secondary</item>
+
+        <item name="colorSurface">@color/fm_surface</item>
+        <item name="colorOnSurface">@color/fm_on_surface</item>
+        <item name="colorOnPrimary">@color/fm_on_primary</item>
+
+        <!-- Ripple (för knappar etc) -->
+        <item name="colorControlHighlight">@color/fm_ripple</item>
+
+        <!-- Flat MaterialButtons (ingen shadow, men ripple kvar) -->
+        <item name="materialButtonStyle">@style/Widget.FixMaster.Button</item>
+
     </style>
 
-    <style name="Theme.FixMaster" parent="Base.Theme.FixMaster" />
+    <!-- Flat buttons med ripple men utan elevation -->
+    <style name="Widget.FixMaster.Button" parent="Widget.Material3.Button">
+        <item name="elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@color/fm_ripple</item>
+    </style>
+
 </resources>

@@ -8,7 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.ma25.fixmaster.R
 import kotlinx.coroutines.launch
 
@@ -16,47 +18,93 @@ class ReportActivity : AppCompatActivity() {
 
     private val viewModel: ReportViewModel by viewModels()
 
+    private lateinit var tvTitle: TextView
+    private lateinit var rgFaultType: RadioGroup
+    private lateinit var btnSubmit: Button
+
+    private lateinit var objectId: String
+    private lateinit var objectName: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
 
-        val objectId = intent.getStringExtra(EXTRA_OBJECT_ID) ?: "unknown"
-        val objectName = intent.getStringExtra(EXTRA_OBJECT_NAME) ?: "Okänt objekt"
+        readIntentExtras()
+        bindViews()
+        renderHeader()
+        setupListeners()
+        observeState()
+    }
 
-        val tvTitle = findViewById<TextView>(R.id.tvObjectTitle)
-        val rg = findViewById<RadioGroup>(R.id.rgFaultType)
-        val btn = findViewById<Button>(R.id.btnSubmit)
+    private fun readIntentExtras() {
+        objectId = intent.getStringExtra(EXTRA_OBJECT_ID) ?: "unknown"
+        objectName = intent.getStringExtra(EXTRA_OBJECT_NAME) ?: getString(R.string.report_object_prefix, "Okänt")
+    }
 
-        tvTitle.text = "Objekt: $objectName"
+    private fun bindViews() {
+        tvTitle = findViewById(R.id.tvObjectTitle)
+        rgFaultType = findViewById(R.id.rgFaultType)
+        btnSubmit = findViewById(R.id.btnSubmit)
+    }
 
-        btn.setOnClickListener {
-            val selectedId = rg.checkedRadioButtonId
+    private fun renderHeader() {
+        tvTitle.text = getString(R.string.report_object_prefix, objectName)
+    }
+
+    private fun setupListeners() {
+        btnSubmit.setOnClickListener {
+            // Blockera dubbelklick om vi redan är i Loading
+            if (!btnSubmit.isEnabled) return@setOnClickListener
+
+            val selectedId = rgFaultType.checkedRadioButtonId
             if (selectedId == -1) {
-                Toast.makeText(this, "Välj en feltyp", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.report_choose_fault), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val selectedText = findViewById<RadioButton>(selectedId).text.toString()
+            val faultType = findViewById<RadioButton>(selectedId).text.toString()
+
             viewModel.submitReport(
                 objectId = objectId,
                 objectName = objectName,
-                faultType = selectedText,
+                faultType = faultType,
                 userId = null // Sprint 1: dummy
             )
         }
+    }
 
+    private fun observeState() {
         lifecycleScope.launch {
-            viewModel.state.collect { state ->
-                when (state) {
-                    is ReportState.Success -> {
-                        Toast.makeText(this@ReportActivity, "Tack! Ärendet är skickat.", Toast.LENGTH_SHORT).show()
-                        finish() // tillbaka
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    when (state) {
+                        is ReportState.Idle -> setSubmitEnabled(true)
+                        is ReportState.Loading -> setSubmitEnabled(false)
+                        is ReportState.Success -> {
+                            Toast.makeText(
+                                this@ReportActivity,
+                                getString(R.string.report_sent_thanks),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+                        is ReportState.Error -> {
+                            setSubmitEnabled(true)
+                            Toast.makeText(
+                                this@ReportActivity,
+                                state.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                    is ReportState.Error -> Toast.makeText(this@ReportActivity, state.message, Toast.LENGTH_SHORT).show()
-                    else -> Unit
                 }
             }
         }
+    }
+
+    private fun setSubmitEnabled(enabled: Boolean) {
+        btnSubmit.isEnabled = enabled
+        btnSubmit.text = getString(if (enabled) R.string.report_send else R.string.report_sending)
     }
 
     companion object {
@@ -64,3 +112,4 @@ class ReportActivity : AppCompatActivity() {
         const val EXTRA_OBJECT_NAME = "extra_object_name"
     }
 }
+
