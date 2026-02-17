@@ -74,7 +74,7 @@
             android:gravity="center"
             app:cornerRadius="16dp" />
 
-        <!-- ✅ ProgressBar (syns bara vid Loading) -->
+        <!-- ProgressBar (syns bara vid Loading) -->
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"

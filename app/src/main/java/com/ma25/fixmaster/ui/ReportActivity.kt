@@ -83,7 +83,7 @@ class ReportActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
 
-                    // ✅ ProgressBar kopplad till state
+                    // ProgressBar kopplad till state
                     progress.isVisible = state is ReportState.Loading
 
                     when (state) {
@@ -92,7 +92,7 @@ class ReportActivity : AppCompatActivity() {
                         is ReportState.Loading -> setSubmitEnabled(false)
 
                         is ReportState.Success -> {
-                            // ✅ Förbättring: säkerställ UI innan vi stänger
+                            // Säkerställ UI innan vi stänger
                             progress.isVisible = false
                             setSubmitEnabled(true)
 
@@ -124,7 +124,7 @@ class ReportActivity : AppCompatActivity() {
         btnSubmit.isEnabled = enabled
         btnSubmit.text = getString(if (enabled) R.string.report_send else R.string.report_sending)
 
-        // Lås valen också under loading (polish)
+        // Lås valen också under loading
         rgFaultType.isEnabled = enabled
         for (i in 0 until rgFaultType.childCount) {
             rgFaultType.getChildAt(i).isEnabled = enabled

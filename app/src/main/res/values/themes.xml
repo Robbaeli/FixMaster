@@ -17,12 +17,12 @@
         <!-- Ripple (för knappar etc) -->
         <item name="colorControlHighlight">@color/fm_ripple</item>
 
-        <!-- Flat MaterialButtons (ingen shadow, men ripple kvar) -->
+        <!-- MaterialButtons -->
         <item name="materialButtonStyle">@style/Widget.FixMaster.Button</item>
 
     </style>
 
-    <!-- Flat buttons med ripple men utan elevation -->
+    <!-- Buttons med ripple -->
     <style name="Widget.FixMaster.Button" parent="Widget.Material3.Button">
         <item name="elevation">0dp</item>
         <item name="android:stateListAnimator">@null</item>

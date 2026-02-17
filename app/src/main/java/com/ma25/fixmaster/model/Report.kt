@@ -1,7 +1,7 @@
 package com.ma25.fixmaster.model
 
 data class Report(
-    val id: String = java.util.UUID.randomUUID().toString(),
+    val id: String = "",
     val objectId: String,
     val objectName: String,
     val faultType: String,
