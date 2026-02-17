@@ -1,15 +1,14 @@
 package com.ma25.fixmaster.repository
 
-// BEHÅLL DENNA:
 import com.ma25.fixmaster.data.model.ReportObject
+import com.ma25.fixmaster.data.model.IssueReport // Importera den nya modellen
 import com.google.firebase.firestore.FirebaseFirestore
-// TA BORT DENNA RAD (den orsakar felet):
-// import com.ma25.fixmaster.model.ReportObject
 import kotlinx.coroutines.tasks.await
 
 class ObjectRepository {
     private val db = FirebaseFirestore.getInstance()
 
+    // Hämta objekt baserat på QR-kod
     suspend fun getObjectByQr(code: String): ReportObject? {
         return try {
             val snapshot = db.collection("objects")
@@ -18,11 +17,22 @@ class ObjectRepository {
                 .await()
 
             if (!snapshot.isEmpty) {
-                // Här används nu ReportObject från rätt paket (data.model)
                 snapshot.documents[0].toObject(ReportObject::class.java)
             } else null
         } catch (e: Exception) {
             null
+        }
+    }
+
+    // NY FUNKTION: Skicka in felrapport till Firebase
+    suspend fun sendIssueReport(report: IssueReport): Boolean {
+        return try {
+            db.collection("reports") // Skapar/använder kollektionen "reports"
+                .add(report)
+                .await()
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 }
