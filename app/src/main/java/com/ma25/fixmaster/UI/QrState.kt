@@ -1,7 +1,5 @@
 package com.ma25.fixmaster.UI
 
-// TA BORT DENNA: import com.ma25.fixmaster.model.ReportObject
-// BEHÅLL DENNA:
 import com.ma25.fixmaster.data.model.ReportObject
 
 sealed class QrState {

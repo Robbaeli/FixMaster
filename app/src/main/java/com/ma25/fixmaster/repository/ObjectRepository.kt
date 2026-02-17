@@ -24,7 +24,7 @@ class ObjectRepository {
         }
     }
 
-    // NY FUNKTION: Skicka in felrapport till Firebase
+    //  FUNKTION: Skicka in felrapport till Firebase
     suspend fun sendIssueReport(report: IssueReport): Boolean {
         return try {
             db.collection("reports") // Skapar/använder kollektionen "reports"

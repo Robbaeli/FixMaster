@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class QrScannerViewModel : ViewModel() {
 
-    // Skapa en instans av ditt repository (senare kan ni använda Dependency Injection)
+    // Skapa en instans av ditt repository
     private val repository = ObjectRepository()
 
     // Detta är appens "tillstånd". Vi börjar i Idle (vänteläge).
@@ -22,10 +22,10 @@ class QrScannerViewModel : ViewModel() {
         // Om vi redan laddar, gör inget mer (förhindrar dubbla anrop)
         if (_qrState.value is QrState.Loading) return
 
-        // Sätt status till Loading så UI:t kan visa en snurra
+        // Sätt status till Loading
         _qrState.value = QrState.Loading
 
-        // Starta en coroutine för att hämta data från Firebase i bakgrunden
+        // Starta en rutine för att hämta data från Firebase i bakgrunden
         viewModelScope.launch {
             val result = repository.getObjectByQr(code)
 

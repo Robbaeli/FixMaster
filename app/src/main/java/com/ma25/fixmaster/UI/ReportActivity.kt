@@ -25,7 +25,7 @@ class ReportActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
 
-        // Koppla UI-komponenter med ID:n från din activity_report.xml
+        // Koppla UI-komponenter med ID:n från activity_report.xml
         tvObjectName = findViewById(R.id.tv_object_name)
         etDescription = findViewById(R.id.et_description)
         btnSendReport = findViewById(R.id.btn_send_report)
