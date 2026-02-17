@@ -1,9 +1,16 @@
 package com.ma25.fixmaster.UI
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.AudioManager
+import android.media.ToneGenerator
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -16,12 +23,15 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.ma25.fixmaster.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -48,22 +58,35 @@ class QrScannerActivity : AppCompatActivity() {
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        // Optimera scannern för att bara leta efter QR-koder
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
         scanner = BarcodeScanning.getClient(options)
 
+        observeViewModel()
         checkCameraPermission()
     }
 
-    private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            startCamera()
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.qrState.collect { state ->
+                when (state) {
+                    is QrState.Success -> {
+                        notifySuccess()
+                        val intent = Intent(this@QrScannerActivity, ReportActivity::class.java).apply {
+                            putExtra("QR_DATA", state.reportObject.qrCode)
+                            putExtra("OBJECT_NAME", state.reportObject.name)
+                        }
+                        startActivity(intent)
+                        finish()
+                    }
+                    is QrState.Error -> {
+                        Toast.makeText(this@QrScannerActivity, state.message, Toast.LENGTH_SHORT).show()
+                        isScanning = true
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 
@@ -89,7 +112,7 @@ class QrScannerActivity : AppCompatActivity() {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis)
             } catch (exc: Exception) {
-                Toast.makeText(this, "Fel: ${exc.message}", Toast.LENGTH_SHORT).show()
+                exc.printStackTrace()
             }
         }, ContextCompat.getMainExecutor(this))
     }
@@ -105,18 +128,10 @@ class QrScannerActivity : AppCompatActivity() {
                     for (barcode in barcodes) {
                         val rawValue = barcode.rawValue
                         if (rawValue != null && isScanning) {
-                            isScanning = false // Stoppa direkt
-
-                            // 1. Visa för användaren att vi hittat något
-                            runOnUiThread {
-                                Toast.makeText(this, "Hittade: $rawValue", Toast.LENGTH_LONG).show()
-
-                                // 2. Skicka datan till nästa skärm (ReportActivity)
-                                val intent = Intent(this, ReportActivity::class.java).apply {
-                                    putExtra("QR_DATA", rawValue)
-                                }
-                                startActivity(intent)
-                                finish()
+                            isScanning = false
+                            // Kör på Main-tråden för att undvika krasch vid UI-anrop
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                viewModel.onQrScanned(rawValue)
                             }
                         }
                     }
@@ -126,6 +141,51 @@ class QrScannerActivity : AppCompatActivity() {
                 }
         } else {
             imageProxy.close()
+        }
+    }
+
+    private fun notifySuccess() {
+        // Använd Main-tråden för att garantera att UI/Hårdvara svarar direkt
+        lifecycleScope.launch(Dispatchers.Main) {
+            // 1. Pip-ljud via Alarm-kanalen (högre prioritet)
+            try {
+                val toneGen = ToneGenerator(AudioManager.STREAM_ALARM, 100)
+                toneGen.startTone(ToneGenerator.TONE_PROP_BEEP, 150)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // 2. Vibration med tvingad effekt
+            val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                vibratorManager.defaultVibrator
+            } else {
+                @Suppress("DEPRECATION")
+                getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            }
+
+            if (vibrator.hasVibrator()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // Skapa en vågform för att göra vibrationen mer märkbar
+                    val timings = longArrayOf(0, 150) // Vänta 0ms, vibrera 150ms
+                    val amplitudes = intArrayOf(0, 255) // Max styrka
+                    val effect = VibrationEffect.createWaveform(timings, amplitudes, -1)
+                    vibrator.vibrate(effect)
+                } else {
+                    @Suppress("DEPRECATION")
+                    vibrator.vibrate(150)
+                }
+            }
+        }
+    }
+
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            startCamera()
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
