@@ -52,8 +52,7 @@
                 android:id="@+id/rbLeak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fault_leak"
-                />
+                android:text="@string/fault_leak" />
 
             <RadioButton
                 android:id="@+id/rbOther"
@@ -75,6 +74,13 @@
             android:gravity="center"
             app:cornerRadius="16dp" />
 
+        <!-- ✅ ProgressBar (syns bara vid Loading) -->
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
