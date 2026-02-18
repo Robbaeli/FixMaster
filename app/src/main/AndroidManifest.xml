@@ -2,8 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Kamera-permission -->
     <uses-permission android:name="android.permission.CAMERA" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.VIBRATE" />
+=======
+
+    <!-- Kamera är ett krav för appen (QR scanning) -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+>>>>>>> origin/us3-loading-progress-sara
 
     <application
         android:allowBackup="true"
@@ -14,17 +23,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FixMaster">
 
+        <!-- Launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
+        <!-- QR Scanner -->
         <activity
-            android:name=".UI.QrScannerActivity"
+            android:name=".ui.QrScannerActivity"
+            android:exported="false" />
+
+        <!-- Report screen -->
+        <activity
+            android:name=".ui.ReportActivity"
             android:exported="false" />
 
         <activity
@@ -32,4 +50,5 @@
             android:exported="false" />
 
     </application>
+
 </manifest>

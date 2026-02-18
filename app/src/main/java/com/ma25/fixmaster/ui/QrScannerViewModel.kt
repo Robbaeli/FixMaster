@@ -1,9 +1,8 @@
-package com.ma25.fixmaster.UI
+package com.ma25.fixmaster.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope // Nu bör denna bli lila/grön istället för röd
 import com.ma25.fixmaster.repository.ObjectRepository
-import com.ma25.fixmaster.data.model.ReportObject // Se till att denna fil finns i rätt mapp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

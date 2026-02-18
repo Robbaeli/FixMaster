@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "507997254269",
+    "project_id": "fixmaster-7454e",
+    "storage_bucket": "fixmaster-7454e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507997254269:android:c8c06dd164174f4a227714",
+        "android_client_info": {
+          "package_name": "com.ma25.fixmaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507997254269-3oq1mena959am1b65n1agl8lfomfuc4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClNtvPZRJv8j_bh8_bXf6qXu5o_eNeMrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507997254269-3oq1mena959am1b65n1agl8lfomfuc4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:padding="20dp">
 
     <TextView
@@ -43,3 +44,86 @@
         app:layout_constraintTop_toBottomOf="@id/til_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+=======
+    android:padding="24dp"
+    android:background="@color/fm_background">
+
+    <LinearLayout
+        android:id="@+id/centerContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Titel -->
+        <TextView
+            android:id="@+id/tvObjectTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Objekt:"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/fm_text_primary"
+            android:gravity="center"
+            android:textAlignment="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <!-- Feltyper -->
+        <RadioGroup
+            android:id="@+id/rgFaultType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/rbBroken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fault_broken" />
+
+            <RadioButton
+                android:id="@+id/rbLeak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fault_leak" />
+
+            <RadioButton
+                android:id="@+id/rbOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fault_other" />
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <!-- Skicka -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="280dp"
+            android:layout_height="52dp"
+            android:text="@string/report_send"
+            android:gravity="center"
+            app:cornerRadius="16dp" />
+
+        <!-- ProgressBar (syns bara vid Loading) -->
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+>>>>>>> origin/us3-loading-progress-sara

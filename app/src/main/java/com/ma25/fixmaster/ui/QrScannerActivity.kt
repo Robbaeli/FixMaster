@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.UI
+package com.ma25.fixmaster.ui
 
 import android.Manifest
 import android.content.Context
