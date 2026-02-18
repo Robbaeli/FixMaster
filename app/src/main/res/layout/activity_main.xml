@@ -86,11 +86,11 @@
             android:id="@+id/test2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_dummy_report"
             android:maxLines="1"
+            android:text="@string/btn_dummy_report"
             app:icon="@android:drawable/ic_menu_edit"
-            app:iconPadding="12dp"
-            app:iconGravity="textStart" />
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
 
     </LinearLayout>
 

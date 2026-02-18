@@ -14,41 +14,27 @@ class ReportViewModel : ViewModel() {
     private val _state = MutableStateFlow<ReportState>(ReportState.Idle)
     val state: StateFlow<ReportState> = _state
 
-    fun submitReport(
-        objectId: String,
-        objectName: String,
-        faultType: String,
-        userId: String? = null
-    ) {
-
-        if (faultType.isBlank()) {
-            _state.value = ReportState.Error("Välj en feltyp.")
-            return
-        }
+    fun submitReport(objectId: String, objectName: String, faultType: String) {
+        _state.value = ReportState.Loading
 
         viewModelScope.launch {
-
-            _state.value = ReportState.Loading
-
             try {
-                // Simulera nätverk / backend
-                delay(800)
+                // Simulera nätverksfördröjning
+                delay(1000)
 
-                val report = Report(
+                val newReport = Report(
                     objectId = objectId,
                     objectName = objectName,
-                    faultType = faultType,
-                    userId = userId
+                    faultType = faultType
                 )
 
-                FakeReportRepository.addReport(report)
+                // Här kan vi  byta till ObjectRepository om vi  vill köra Firebase tex vid att skapa manuellt objekt
+                FakeReportRepository.addReport(newReport)
 
                 _state.value = ReportState.Success
-
             } catch (e: Exception) {
-                _state.value = ReportState.Error("Något gick fel.")
+                _state.value = ReportState.Error("Kunde inte skicka rapporten.")
             }
         }
     }
 }
-

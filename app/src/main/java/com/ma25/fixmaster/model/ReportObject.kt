@@ -6,4 +6,4 @@ data class ReportObject(
     val location: String = "",
     val category: String = "",
     val qrCode: String = ""
-)git checkout test
+)

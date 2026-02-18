@@ -7,5 +7,5 @@ data class Report(
     val faultType: String,
     val status: String = "Ny",
     val createdAt: Long = System.currentTimeMillis(),
-    val userId: String? = null // Sprint 1: kan vara null/dummy
+    val userId: String? = null
 )
