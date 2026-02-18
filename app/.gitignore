@@ -1,3 +1,4 @@
 /build
 # Firebase konfiguration (känslig data)
 app/google-services.json
+.idea/
