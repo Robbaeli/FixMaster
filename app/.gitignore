@@ -1,2 +1,5 @@
-/build
-google-services.json
+.gradle/
+.idea/
+local.properties
+app/google-services.json
+.DS_Store

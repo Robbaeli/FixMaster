@@ -18,7 +18,7 @@
         android:theme="@style/Theme.FixMaster">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +26,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MainActivity" android:exported="false" />
+
         <activity android:name=".ui.AdminDashboardActivity" android:exported="false" />
         <activity android:name=".ui.QrScannerActivity" android:exported="false" />
         <activity android:name=".ui.ReportActivity" android:exported="false" />
+
+        <activity android:name=".CreateAccountActivity" android:exported="false" />
+        <activity android:name=".ResetPasswordActivity" android:exported="false" />
+        <activity android:name=".UserDashboardActivity" android:exported="false" />
+        <activity android:name=".ReportUser" android:exported="false" />
 
     </application>
 </manifest>

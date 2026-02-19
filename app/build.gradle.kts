@@ -6,12 +6,13 @@ plugins {
 
 android {
     namespace = "com.ma25.fixmaster"
+    // HÄR ÄR FIXEN: Ändra från 35 till 36
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ma25.fixmaster"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35 // Du kan ha 35 här eller 36, men compileSdk MÅSTE vara 36
         versionCode = 1
         versionName = "1.0"
 
@@ -28,7 +29,6 @@ android {
         }
     }
 
-    // FIX FÖR PIXEL 7a / 16 KB:
     packaging {
         jniLibs {
             useLegacyPackaging = true
@@ -45,6 +45,16 @@ android {
 }
 
 dependencies {
+    // Firebase BoM (Håller versionerna synkade)
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+
+    // Firebase bibliotek
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+    // AndroidX & UI (Dessa är de som krävde SDK 36)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -58,12 +68,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
 
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
-
-    // Lifecycle & ML Kit (Play Services versionen som är 16 KB-safe)
+    // Lifecycle & ML Kit
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-ktx:1.8.0")
