@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class QrScannerViewModel : ViewModel() {
 
-    // Skapa en instans av ditt repository
+    // Skapa en instans av  repository
     private val repository = ObjectRepository()
 
     // Detta är appens "tillstånd". Vi börjar i Idle (vänteläge).

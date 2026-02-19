@@ -40,7 +40,6 @@ class QrScannerActivity : AppCompatActivity() {
     private val viewModel: QrScannerViewModel by viewModels()
     private val CAMERA_PERMISSION_CODE = 100
 
-    // STOPPAR DUBBLA SCANNINGAR
     private var isProcessing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
