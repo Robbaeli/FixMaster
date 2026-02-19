@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="fm_background">#0E0F14</color>
+    <color name="fm_on_primary">#0E0F14</color>
+    <color name="fm_on_surface">#FFFFFF</color>
+    <color name="fm_outline">#FF8A3D</color>
+    <color name="fm_primary">#FF8A3D</color>
+    <color name="fm_ripple">#66FF8A3D</color>
+    <color name="fm_secondary">#FFC199</color>
+    <color name="fm_surface">#181A22</color>
+    <color name="fm_text_primary">#FFFFFF</color>
+    <color name="fm_text_secondary">#B0B3C2</color>
+    <color name="status_green">#388E3C</color>
+    <color name="status_red">#D32F2F</color>
+    <color name="status_yellow">#FBC02D</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">FixMaster</string>
+    <string name="btn_dummy_report">Finns ingen QR kod? skriv in manuellt här</string>
+    <string name="cd_scan_qr">Skanna QR-kod</string>
+    <string name="default_web_client_id" translatable="false">507997254269-3oq1mena959am1b65n1agl8lfomfuc4p.apps.googleusercontent.com</string>
+    <string name="fault_broken">Trasig</string>
+    <string name="fault_leak">Läckage</string>
+    <string name="fault_other">Annat</string>
+    <string name="gcm_defaultSenderId" translatable="false">507997254269</string>
+    <string name="google_api_key" translatable="false">AIzaSyClNtvPZRJv8j_bh8_bXf6qXu5o_eNeMrk</string>
+    <string name="google_app_id" translatable="false">1:507997254269:android:c8c06dd164174f4a227714</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyClNtvPZRJv8j_bh8_bXf6qXu5o_eNeMrk</string>
+    <string name="google_storage_bucket" translatable="false">fixmaster-7454e.firebasestorage.app</string>
+    <string name="project_id" translatable="false">fixmaster-7454e</string>
+    <string name="report_choose_fault">Välj en feltyp</string>
+    <string name="report_object_prefix">Objekt: %1$s</string>
+    <string name="report_send">Skicka</string>
+    <string name="report_sending">Skickar…</string>
+    <string name="report_sent_thanks">Tack! Ärendet är skickat.</string>
+    <string name="scan_label">Skanna QR</string>
+    <string name="subtitle_scan">Skanna en QR-kod för att skapa en felanmälan</string>
+    <style name="Theme.FixMaster" parent="Theme.Material3.Dark.NoActionBar">
+
+        
+        <item name="android:windowBackground">@color/fm_background</item>
+
+        
+        <item name="colorPrimary">@color/fm_primary</item>
+        <item name="colorSecondary">@color/fm_secondary</item>
+
+        <item name="colorSurface">@color/fm_surface</item>
+        <item name="colorOnSurface">@color/fm_on_surface</item>
+        <item name="colorOnPrimary">@color/fm_on_primary</item>
+
+        
+        <item name="colorControlHighlight">@color/fm_ripple</item>
+
+        
+        <item name="materialButtonStyle">@style/Widget.FixMaster.Button</item>
+
+    </style>
+    <style name="Widget.FixMaster.Button" parent="Widget.Material3.Button">
+        <item name="elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@color/fm_ripple</item>
+    </style>
+</resources>

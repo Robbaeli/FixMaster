@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">507997254269-3oq1mena959am1b65n1agl8lfomfuc4p.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">507997254269</string>
+    <string name="google_api_key" translatable="false">AIzaSyClNtvPZRJv8j_bh8_bXf6qXu5o_eNeMrk</string>
+    <string name="google_app_id" translatable="false">1:507997254269:android:c8c06dd164174f4a227714</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyClNtvPZRJv8j_bh8_bXf6qXu5o_eNeMrk</string>
+    <string name="google_storage_bucket" translatable="false">fixmaster-7454e.firebasestorage.app</string>
+    <string name="project_id" translatable="false">fixmaster-7454e</string>
+</resources>
