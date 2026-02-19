@@ -12,7 +12,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -30,7 +29,6 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.ma25.fixmaster.R
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -38,156 +36,94 @@ import java.util.concurrent.Executors
 class QrScannerActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var scanner: BarcodeScanner
+    private lateinit var barcodeScanner: BarcodeScanner
     private val viewModel: QrScannerViewModel by viewModels()
-    private var isScanning = true
+    private val CAMERA_PERMISSION_CODE = 100
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                startCamera()
-            } else {
-                Toast.makeText(this, "Kamera krävs", Toast.LENGTH_LONG).show()
-                finish()
-            }
-        }
+    // STOPPAR DUBBLA SCANNINGAR
+    private var isProcessing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_scanner)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+        barcodeScanner = BarcodeScanning.getClient(
+            BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
+        )
 
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
-        scanner = BarcodeScanning.getClient(options)
+        if (allPermissionsGranted()) startCamera()
+        else requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
 
         observeViewModel()
-        checkCameraPermission()
     }
 
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.qrState.collect { state ->
-                when (state) {
-                    is QrState.Success -> {
-                        notifySuccess()
-                        val intent = Intent(this@QrScannerActivity, ReportActivity::class.java).apply {
-                            putExtra("QR_DATA", state.reportObject.qrCode)
-                            putExtra("OBJECT_NAME", state.reportObject.name)
-                        }
-                        startActivity(intent)
-                        finish()
+                if (state is QrState.Success) {
+                    notifySuccess()
+                    val intent = Intent(this@QrScannerActivity, ReportActivity::class.java).apply {
+                        putExtra("QR_DATA", state.reportObject.qrCode)
+                        putExtra("OBJECT_NAME", state.reportObject.name)
                     }
-                    is QrState.Error -> {
-                        Toast.makeText(this@QrScannerActivity, state.message, Toast.LENGTH_SHORT).show()
-                        isScanning = true
-                    }
-                    else -> {}
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
+    }
+
+    private fun notifySuccess() {
+        try {
+            ToneGenerator(AudioManager.STREAM_ALARM, 100).startTone(ToneGenerator.TONE_PROP_BEEP, 150)
+            val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                (getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+            } else {
+                @Suppress("DEPRECATION") getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            }
+            vibrator.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE))
+        } catch (e: Exception) {}
     }
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
+            val cameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(findViewById<PreviewView>(R.id.previewView).surfaceProvider)
             }
-
-            val imageAnalysis = ImageAnalysis.Builder()
+            val imageAnalyzer = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor) { imageProxy ->
-                        processImageProxy(imageProxy)
-                    }
+                    it.setAnalyzer(cameraExecutor) { imageProxy -> processImageProxy(imageProxy) }
                 }
-
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis)
-            } catch (exc: Exception) {
-                exc.printStackTrace()
-            }
+            cameraProvider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalyzer)
         }, ContextCompat.getMainExecutor(this))
     }
 
-    @OptIn(ExperimentalGetImage::class)
+    @androidx.annotation.OptIn(ExperimentalGetImage::class)
     private fun processImageProxy(imageProxy: ImageProxy) {
-        val mediaImage = imageProxy.image
-        if (mediaImage != null && isScanning) {
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-
-            scanner.process(image)
-                .addOnSuccessListener { barcodes ->
-                    for (barcode in barcodes) {
-                        val rawValue = barcode.rawValue
-                        if (rawValue != null && isScanning) {
-                            isScanning = false
-                            // Kör på Main-tråden för att undvika krasch vid UI-anrop
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                viewModel.onQrScanned(rawValue)
-                            }
-                        }
-                    }
-                }
-                .addOnCompleteListener {
-                    imageProxy.close()
-                }
-        } else {
+        if (isProcessing) {
             imageProxy.close()
+            return
         }
-    }
 
-    private fun notifySuccess() {
-        // Använd Main-tråden för att garantera att UI/Hårdvara svarar direkt
-        lifecycleScope.launch(Dispatchers.Main) {
-            // 1. Pip-ljud via Alarm-kanalen (högre prioritet)
-            try {
-                val toneGen = ToneGenerator(AudioManager.STREAM_ALARM, 100)
-                toneGen.startTone(ToneGenerator.TONE_PROP_BEEP, 150)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            // 2. Vibration med tvingad effekt
-            val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator
-            } else {
-                @Suppress("DEPRECATION")
-                getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            }
-
-            if (vibrator.hasVibrator()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    // Skapa en vågform för att göra vibrationen mer märkbar
-                    val timings = longArrayOf(0, 150) // Vänta 0ms, vibrera 150ms
-                    val amplitudes = intArrayOf(0, 255) // Max styrka
-                    val effect = VibrationEffect.createWaveform(timings, amplitudes, -1)
-                    vibrator.vibrate(effect)
-                } else {
-                    @Suppress("DEPRECATION")
-                    vibrator.vibrate(150)
+        val mediaImage = imageProxy.image ?: return
+        val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+        barcodeScanner.process(image)
+            .addOnSuccessListener { barcodes ->
+                if (barcodes.isNotEmpty() && !isProcessing) {
+                    isProcessing = true // Spärra direkt vid första träffen
+                    val barcode = barcodes[0]
+                    barcode.rawValue?.let { viewModel.onQrScanned(it) }
                 }
             }
-        }
+            .addOnCompleteListener { imageProxy.close() }
     }
 
-    private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            startCamera()
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
-    }
+    private fun allPermissionsGranted() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
     override fun onDestroy() {
         super.onDestroy()

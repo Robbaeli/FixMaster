@@ -86,11 +86,17 @@
             android:id="@+id/test2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="@string/btn_dummy_report"
-            app:icon="@android:drawable/ic_menu_edit"
-            app:iconGravity="textStart"
-            app:iconPadding="12dp" />
+            android:text="Finns ingen QR kod? Skriv manuellt"
+            app:icon="@android:drawable/ic_menu_edit" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_admin_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Admin: Se alla ärenden"
+            app:icon="@android:drawable/ic_lock_lock"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
     </LinearLayout>
 

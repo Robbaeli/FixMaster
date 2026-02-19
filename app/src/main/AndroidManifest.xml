@@ -26,13 +26,9 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.QrScannerActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.ReportActivity"
-            android:exported="false" />
+        <activity android:name=".ui.AdminDashboardActivity" android:exported="false" />
+        <activity android:name=".ui.QrScannerActivity" android:exported="false" />
+        <activity android:name=".ui.ReportActivity" android:exported="false" />
 
     </application>
 </manifest>
