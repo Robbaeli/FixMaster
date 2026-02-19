@@ -1,5 +1,6 @@
 package com.ma25.fixmaster.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ProgressBar
@@ -40,7 +41,6 @@ class ReportActivity : AppCompatActivity() {
     }
 
     private fun readIntentExtras() {
-        // Tar emot data från både QR-scanner och test-knappen i MainActivity
         objectId = intent.getStringExtra("QR_DATA") ?: intent.getStringExtra(EXTRA_OBJECT_ID) ?: "unknown"
         objectName = intent.getStringExtra("OBJECT_NAME") ?: intent.getStringExtra(EXTRA_OBJECT_NAME) ?: "Okänt objekt"
     }
@@ -83,7 +83,9 @@ class ReportActivity : AppCompatActivity() {
 
                     when (state) {
                         is ReportState.Success -> {
-                            Toast.makeText(this@ReportActivity, "Rapport skickad!", Toast.LENGTH_SHORT).show()
+                            // Starta bekräftelsevyn
+                            val intent = Intent(this@ReportActivity, ReportSuccessActivity::class.java)
+                            startActivity(intent)
                             finish()
                         }
                         is ReportState.Error -> {

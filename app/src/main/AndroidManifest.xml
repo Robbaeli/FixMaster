@@ -27,18 +27,16 @@
         </activity>
 
         <activity android:name=".MainActivity" android:exported="false" />
-
         <activity android:name=".ui.AdminDashboardActivity" android:exported="false" />
         <activity android:name=".ui.QrScannerActivity" android:exported="false" />
         <activity android:name=".ui.ReportActivity" android:exported="false" />
-
         <activity android:name=".CreateAccountActivity" android:exported="false" />
         <activity android:name=".ResetPasswordActivity" android:exported="false" />
         <activity android:name=".UserDashboardActivity" android:exported="false" />
         <activity android:name=".ReportUser" android:exported="false" />
 
         <activity
-            android:name=".ReportSuccessActivity"
+            android:name=".ui.ReportSuccessActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
