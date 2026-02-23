@@ -92,4 +92,4 @@ coverage/
 *.coverage
 
 # Android Profiler
-.profiler/
+.profiler/.gradle/
