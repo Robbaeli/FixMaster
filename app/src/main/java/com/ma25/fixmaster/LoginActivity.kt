@@ -8,12 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
 
     private lateinit var etEmail: TextInputEditText
     private lateinit var etPassword: TextInputEditText
@@ -27,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
 
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
@@ -49,11 +46,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Auto-login
+        // Auto-login: Skickar nu alla direkt till UserDashboardActivity
         val current = auth.currentUser
         if (current != null) {
             setLoading(true)
-            fetchRoleAndNavigate(current.uid)
+            goTo(UserDashboardActivity::class.java)
         }
     }
 
@@ -75,38 +72,12 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Login failed (no uid)", Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
-                fetchRoleAndNavigate(uid)
+                // Skickar användaren direkt till UserDashboardActivity vid lyckad inloggning
+                goTo(UserDashboardActivity::class.java)
             }
             .addOnFailureListener { e ->
                 setLoading(false)
                 Toast.makeText(this, e.message ?: "Login failed", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun fetchRoleAndNavigate(uid: String) {
-        db.collection("users").document(uid).get()
-            .addOnSuccessListener { doc ->
-                val role = doc.getString("role")
-                if (role.isNullOrBlank()) {
-                    setLoading(false)
-                    Toast.makeText(this, "No role found for this user", Toast.LENGTH_LONG).show()
-                    auth.signOut()
-                    return@addOnSuccessListener
-                }
-                when (role) {
-                    "admin" -> goTo(AdminDashboardActivity::class.java)
-                    "user" -> goTo(UserDashboardActivity::class.java)
-                    else -> {
-                        setLoading(false)
-                        Toast.makeText(this, "Unknown role: $role", Toast.LENGTH_LONG).show()
-                        auth.signOut()
-                    }
-                }
-            }
-            .addOnFailureListener { e ->
-                setLoading(false)
-                Toast.makeText(this, e.message ?: "Failed to load role", Toast.LENGTH_LONG).show()
-                auth.signOut()
             }
     }
 

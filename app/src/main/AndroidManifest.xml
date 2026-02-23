@@ -34,6 +34,9 @@
         <activity android:name=".ResetPasswordActivity" android:exported="false" />
         <activity android:name=".UserDashboardActivity" android:exported="false" />
         <activity android:name=".ReportUser" android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.ReportSuccessActivity"

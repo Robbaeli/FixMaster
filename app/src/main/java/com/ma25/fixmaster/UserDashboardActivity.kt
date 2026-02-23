@@ -8,32 +8,56 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore // <-- Ny import
 import com.ma25.fixmaster.ui.AdminDashboardActivity
-import com.ma25.fixmaster.ReportUser
 
 class UserDashboardActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore // <-- Definiera databasen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_dashboard)
 
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance() // <-- Starta databasen
 
         // 1. Skapa felanmälan -> MainActivity
         findViewById<MaterialButton>(R.id.btnCreateReport).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        // 2. Mina felanmälningar -> (Placeholder tills funktionen är byggd)
+        // 2. Mina felanmälningar -> ReportUser
         findViewById<MaterialButton>(R.id.btnMyReports).setOnClickListener {
             startActivity(Intent(this, ReportUser::class.java))
         }
 
-        // 3. Admin -> AdminDashboardActivity (Där listan finns)
+        // 3. Admin -> LÅSET ÄR HÄR
         findViewById<MaterialButton>(R.id.btnAdminView).setOnClickListener {
-            startActivity(Intent(this, AdminDashboardActivity::class.java))
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                // Hämta användarens dokument från Firestore
+                db.collection("users").document(currentUser.uid).get()
+                    .addOnSuccessListener { document ->
+                        val role = document.getString("role")
+
+                        // Kolla om rollen är "admin"
+                        if (role == "admin") {
+                            // Släpp in!
+                            startActivity(Intent(this, AdminDashboardActivity::class.java))
+                        } else {
+                            // Stoppa vanliga användare
+                            Toast.makeText(this, "Åtkomst nekad: Endast för administratörer.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    .addOnFailureListener {
+                        // Om något går fel med internet/uppkopplingen
+                        Toast.makeText(this, "Kunde inte verifiera behörighet.", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "Du är inte inloggad.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 4. Info-knapp för Admin

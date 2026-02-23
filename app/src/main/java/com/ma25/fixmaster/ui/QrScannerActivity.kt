@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -51,8 +52,11 @@ class QrScannerActivity : AppCompatActivity() {
             BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
         )
 
-        if (allPermissionsGranted()) startCamera()
-        else requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        if (allPermissionsGranted()) {
+            startCamera()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        }
 
         observeViewModel()
     }
@@ -60,14 +64,28 @@ class QrScannerActivity : AppCompatActivity() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.qrState.collect { state ->
-                if (state is QrState.Success) {
-                    notifySuccess()
-                    val intent = Intent(this@QrScannerActivity, ReportActivity::class.java).apply {
-                        putExtra("QR_DATA", state.reportObject.qrCode)
-                        putExtra("OBJECT_NAME", state.reportObject.name)
+                when (state) {
+                    is QrState.Success -> {
+                        notifySuccess()
+                        val intent = Intent(this@QrScannerActivity, ReportActivity::class.java).apply {
+                            putExtra("QR_DATA", state.reportObject.qrCode)
+                            putExtra("OBJECT_NAME", state.reportObject.name)
+                        }
+                        startActivity(intent)
+                        finish()
                     }
-                    startActivity(intent)
-                    finish()
+                    is QrState.Error -> {
+                        // Visar felmeddelandet (t.ex. "Objektet hittades inte")
+                        Toast.makeText(this@QrScannerActivity, state.message, Toast.LENGTH_LONG).show()
+                        // Återställ spärren så användaren kan försöka scanna igen
+                        isProcessing = false
+                    }
+                    is QrState.Loading -> {
+                        // Här kan du lägga till en ProgressBar om det tar tid att hämta från Firebase
+                    }
+                    is QrState.Idle -> {
+                        // Vänteläge, ingen åtgärd behövs
+                    }
                 }
             }
         }
@@ -82,7 +100,9 @@ class QrScannerActivity : AppCompatActivity() {
                 @Suppress("DEPRECATION") getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             }
             vibrator.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE))
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+            Log.e("QrScanner", "Haptic feedback failed", e)
+        }
     }
 
     private fun startCamera() {
@@ -111,18 +131,26 @@ class QrScannerActivity : AppCompatActivity() {
 
         val mediaImage = imageProxy.image ?: return
         val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+
         barcodeScanner.process(image)
             .addOnSuccessListener { barcodes ->
                 if (barcodes.isNotEmpty() && !isProcessing) {
-                    isProcessing = true // Spärra direkt vid första träffen
                     val barcode = barcodes[0]
-                    barcode.rawValue?.let { viewModel.onQrScanned(it) }
+                    barcode.rawValue?.let { code ->
+                        isProcessing = true // Spärra för att undvika dubbla anrop
+                        Log.d("QrScanner", "Scannad kod: $code") // Bra för felsökning i Logcat
+                        viewModel.onQrScanned(code)
+                    }
                 }
             }
-            .addOnCompleteListener { imageProxy.close() }
+            .addOnCompleteListener {
+                imageProxy.close()
+            }
     }
 
-    private fun allPermissionsGranted() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+    private fun allPermissionsGranted() = ContextCompat.checkSelfPermission(
+        this, Manifest.permission.CAMERA
+    ) == PackageManager.PERMISSION_GRANTED
 
     override fun onDestroy() {
         super.onDestroy()
