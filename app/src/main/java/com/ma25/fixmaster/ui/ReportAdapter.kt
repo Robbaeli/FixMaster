@@ -7,10 +7,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ma25.fixmaster.R
-import com.ma25.fixmaster.model.Report
+import com.ma25.fixmaster.data.model.IssueReport
+
 
 class ReportAdapter(
-    private var reports: List<Report>
+    private var reports: List<IssueReport>,
+    private val onItemClick: (IssueReport) -> Unit
 ) : RecyclerView.Adapter<ReportAdapter.ReportViewHolder>() {
 
     inner class ReportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,8 +33,12 @@ class ReportAdapter(
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = reports[position]
 
+        holder.itemView.setOnClickListener {
+            onItemClick(report)
+        }
+
         holder.tvObjectName.text = report.objectName
-        holder.tvLocation.text = report.location
+        holder.tvLocation.text = report.objectId
         holder.tvStatus.text = report.status
         when (report.status) {
         "Ny"-> holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.status_red)
@@ -44,13 +50,13 @@ class ReportAdapter(
 
         }
 
-        holder.tvPriority.text = report.faultType
+        holder.tvPriority.text = report.description
         holder.tvTime.text = "Just nu"
     }
 
     override fun getItemCount(): Int = reports.size
 
-    fun updateList(newList: List<Report>) {
+    fun updateList(newList: List<IssueReport>) {
         reports = newList
         notifyDataSetChanged()
     }

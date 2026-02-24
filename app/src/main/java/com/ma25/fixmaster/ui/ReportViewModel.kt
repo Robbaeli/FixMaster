@@ -2,8 +2,8 @@ package com.ma25.fixmaster.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ma25.fixmaster.model.Report
-import com.ma25.fixmaster.repository.FakeReportRepository
+import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.repository.ObjectRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,10 +11,13 @@ import kotlinx.coroutines.launch
 
 class ReportViewModel : ViewModel() {
 
+    private val repository = ObjectRepository()
+
+
     private val _state = MutableStateFlow<ReportState>(ReportState.Idle)
     val state: StateFlow<ReportState> = _state
 
-    fun submitReport(objectId: String, objectName: String, faultType: String) {
+    fun submitReport(objectId: String, objectName: String, faultType: String ,createdBy: String) {
         _state.value = ReportState.Loading
 
         viewModelScope.launch {
@@ -22,14 +25,17 @@ class ReportViewModel : ViewModel() {
                 // Simulera nätverksfördröjning
                 delay(1000)
 
-                val newReport = Report(
+                val newReport = IssueReport(
                     objectId = objectId,
                     objectName = objectName,
-                    faultType = faultType
+                    description = faultType,
+                    status = "Ny",
+                    createdBy = createdBy
                 )
 
                 // Här kan vi  byta till ObjectRepository om vi  vill köra Firebase tex vid att skapa manuellt objekt
-                FakeReportRepository.addReport(newReport)
+                //Micke - La till ObjectRepository
+                repository.addReport(newReport)
 
                 _state.value = ReportState.Success
             } catch (e: Exception) {

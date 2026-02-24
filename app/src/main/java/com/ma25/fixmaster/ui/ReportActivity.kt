@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.ma25.fixmaster.R
 import kotlinx.coroutines.launch
+import com.google.firebase.auth.FirebaseAuth
 
 class ReportActivity : AppCompatActivity() {
 
@@ -65,11 +66,18 @@ class ReportActivity : AppCompatActivity() {
             }
 
             val faultType = findViewById<RadioButton>(selectedId).text.toString()
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            if (uid ==null) {
+                Toast.makeText(this, "Du är inte inloggad", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+
+            }
 
             viewModel.submitReport(
                 objectId = objectId,
                 objectName = objectName,
-                faultType = faultType
+                faultType = faultType,
+                createdBy = uid
             )
         }
     }
