@@ -77,5 +77,48 @@ class UserDashboardActivity : AppCompatActivity() {
             startActivity(i)
             finish()
         }
+
+        // 6. Radera konto (bekräftelse Ja/Nej)
+        findViewById<MaterialButton>(R.id.btnDeleteAccount).setOnClickListener {
+
+            AlertDialog.Builder(this)
+                .setTitle("Radera konto?")
+                .setMessage("Är du säker? Detta går inte att ångra.")
+                .setNegativeButton("Nej", null)
+                .setPositiveButton("Ja") { _, _ ->
+
+                    val user = auth.currentUser
+                    if (user == null) {
+                        Toast.makeText(this, "Du är inte inloggad.", Toast.LENGTH_SHORT).show()
+                        return@setPositiveButton
+                    }
+
+                    val uid = user.uid
+
+                    // (اختياري) احذف user document من Firestore أولاً
+                    db.collection("users").document(uid).delete()
+                        .addOnCompleteListener {
+
+                            // احذف حساب Firebase Auth
+                            user.delete()
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Kontot raderades.", Toast.LENGTH_SHORT).show()
+
+                                    val i = Intent(this, LoginActivity::class.java)
+                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(i)
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(
+                                        this,
+                                        e.message ?: "Kunde inte radera konto. Logga in igen och försök.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                        }
+                }
+                .show()
+        }
     }
 }
