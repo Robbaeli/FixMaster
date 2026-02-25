@@ -1,5 +1,6 @@
 package com.ma25.fixmaster.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -32,7 +33,11 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = ReportAdapter(emptyList())
+        adapter = ReportAdapter(emptyList()) { report ->
+            val intent = Intent(this, ReportDetailActivity::class.java)
+            intent.putExtra("reportId", report.id)
+            startActivity(intent)
+        }
         recyclerView.adapter = adapter
         emptyStateTextView = findViewById(R.id.tvEmptyState)
 

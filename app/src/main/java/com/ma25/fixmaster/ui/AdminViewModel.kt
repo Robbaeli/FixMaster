@@ -3,8 +3,7 @@ package com.ma25.fixmaster.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ma25.fixmaster.model.Report
-import com.ma25.fixmaster.repository.InMemoryReportRepository
+import com.ma25.fixmaster.repository.ObjectRepository
 import com.ma25.fixmaster.repository.ReportRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class AdminViewModel : ViewModel() {
 
-    private val repository: ReportRepository = InMemoryReportRepository()
+    private val repository: ReportRepository = ObjectRepository()
 
     private val _state = MutableStateFlow<AdminState>(AdminState.Loading)
     val state: StateFlow<AdminState> = _state.asStateFlow()
