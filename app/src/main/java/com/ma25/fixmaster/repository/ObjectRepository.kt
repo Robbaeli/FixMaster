@@ -1,9 +1,11 @@
 package com.ma25.fixmaster.repository
 
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
-import com.ma25.fixmaster.data.model.ReportObject
-import com.ma25.fixmaster.data.model.IssueReport // Importera den nya modellen
 import com.google.firebase.firestore.FirebaseFirestore
+import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.data.model.ReportObject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -11,8 +13,11 @@ import kotlinx.coroutines.tasks.await
 
 class ObjectRepository : ReportRepository {
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
-    // Hämta objekt baserat på QR-kod
+    // ========================
+    // OBJECTS: get by QR
+    // ========================
     suspend fun getObjectByQr(code: String): ReportObject? {
         return try {
             val snapshot = db.collection("objects")
@@ -20,75 +25,84 @@ class ObjectRepository : ReportRepository {
                 .get()
                 .await()
 
-            if (!snapshot.isEmpty) {
-                snapshot.documents[0].toObject(ReportObject::class.java)
-            } else null
+            if (!snapshot.isEmpty) snapshot.documents[0].toObject(ReportObject::class.java) else null
         } catch (e: Exception) {
             null
         }
     }
 
-    //  FUNKTION: Skicka in felrapport till Firebase
-    suspend fun sendIssueReport(report: IssueReport): Boolean {
-        return try {
-            db.collection("reports") // Skapar/använder kollektionen "reports"
-                .add(report)
-                .await()
-            true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    //Saknades addReport funktion
-
+    // ========================
+    // CREATE REPORT (User)
+    // ✅ adds createdBy automatically
+    // ========================
     override suspend fun addReport(report: IssueReport) {
+        val uid = auth.currentUser?.uid ?: return
+
+        val reportWithOwner = report.copy(
+            createdBy = uid,
+            // timestamp optional: if you want serverTimestamp in firestore set it in map instead
+            timestamp = report.timestamp ?: Timestamp.now()
+        )
+
         db.collection("reports")
-            .add(report)
+            .add(reportWithOwner)
             .await()
     }
 
-    //========================
-    //ADMIN - REALTIME LISTA
-    //========================
-    override fun observeReports(): Flow<List<IssueReport>> = callbackFlow{
-
-        val listener =db.collection("reports")
+    // ========================
+    // ADMIN - realtime list (status != Klar)
+    // ========================
+    override fun observeReports(): Flow<List<IssueReport>> = callbackFlow {
+        val listener = db.collection("reports")
             .whereNotEqualTo("status", "Klar")
-            .addSnapshotListener{ snapshot, error ->
-
+            .addSnapshotListener { snapshot, error ->
                 if (error != null) {
-                close(error)
-                return@addSnapshotListener
-            }
+                    close(error)
+                    return@addSnapshotListener
+                }
 
-                val reports = snapshot?.documents?.mapNotNull {doc ->
-                    doc.toObject(IssueReport::class.java)
-                        ?.copy(id=doc.id)
+                val reports = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
                 } ?: emptyList()
 
                 trySend(reports)
-
             }
-        awaitClose {listener.remove()}
 
-
+        awaitClose { listener.remove() }
     }
-    //=====================
-    //ADMIN UPDATE STATUS
-    //=====================
-    override suspend fun updateReportStatus(
-        reportId: String,
-        newStatus: String
-    ){
 
+    // ========================
+    // USER - realtime list (createdBy == uid)
+    // ========================
+    override fun observeMyReports(uid: String): Flow<List<IssueReport>> = callbackFlow {
+        val listener = db.collection("reports")
+            .whereEqualTo("createdBy", uid)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val myReports = snapshot?.documents?.mapNotNull { doc ->
+                    doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
+                } ?: emptyList()
+
+                trySend(myReports)
+            }
+
+        awaitClose { listener.remove() }
+    }
+
+    // ========================
+    // ADMIN - update status
+    // ========================
+    override suspend fun updateReportStatus(reportId: String, newStatus: String) {
         val updateData = mutableMapOf<String, Any>(
-            "status" to newStatus,
+            "status" to newStatus
         )
 
         if (newStatus == "Klar") {
-            updateData["completedTimestamp"] =
-                FieldValue.serverTimestamp()
+            updateData["completedTimestamp"] = FieldValue.serverTimestamp()
         }
 
         db.collection("reports")

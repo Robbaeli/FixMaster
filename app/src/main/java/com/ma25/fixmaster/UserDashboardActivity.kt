@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore // <-- Ny import
+import com.ma25.fixmaster.ui.ReportUser
 import com.ma25.fixmaster.ui.AdminDashboardActivity
 
 class UserDashboardActivity : AppCompatActivity() {
