@@ -9,9 +9,12 @@ data class IssueReport(
     val description: String = "",
     val status: String = "Inskickad",
     val imageUrl: String? = null, // <--- ROBIN: Nytt fält för bildlänk (US4)
-    val timestamp: Timestamp = Timestamp.now(),
+    val timestamp: Timestamp? = null,
     val completedTimestamp: Timestamp? = null,
-    val createdBy: String=""
+    val createdBy: String="",
+    val priority: String="",
+    val floor: String="",
+    val category: String=""
     val status: String = "Ny",
 
     val qrCode: String = "",

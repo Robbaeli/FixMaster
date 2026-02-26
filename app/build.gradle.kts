@@ -75,4 +75,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
+
+    // För ChipGroup filtrering
+    implementation("com.google.android.material:material:1.11.0")
 }

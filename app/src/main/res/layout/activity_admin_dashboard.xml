@@ -17,6 +17,53 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <!-- Chip variant -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adminTitle"
+        android:layout_marginTop="12dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alla"
+            style="@style/Widget.MaterialComponents.Chip.Filter"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Akuta"
+        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipFloor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Våning 1"
+        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipIT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IT"
+        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vatten"
+        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+    </com.google.android.material.chip.ChipGroup>
+
+
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -36,9 +83,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewReports"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/adminTitle"
-        android:layout_above="@id/btnLogoutAdmin"
+        android:layout_height="match_parent"
+        android:layout_below="@id/chipGroupFilters"
         android:layout_marginTop="16dp"
         tools:listitem="@android:layout/simple_list_item_2" />
 

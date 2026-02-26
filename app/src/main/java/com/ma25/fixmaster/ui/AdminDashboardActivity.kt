@@ -24,6 +24,7 @@ class AdminDashboardActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var viewModel: AdminViewModel
     private lateinit var adapter: ReportAdapter
+
     private lateinit var emptyStateTextView: TextView
     private lateinit var btnLogoutAdmin: MaterialButton
 
@@ -43,21 +44,50 @@ class AdminDashboardActivity : AppCompatActivity() {
         adapter = ReportAdapter(emptyList()) { report ->
             val intent = Intent(this, ReportDetailActivity::class.java)
             intent.putExtra("reportId", report.id)
+            intent.putExtra("currentStatus", report.status)
             startActivity(intent)
         }
         recyclerView.adapter = adapter
+        emptyStateTextView = findViewById(R.id.tvEmptyState)
+
+
 
         viewModel = AdminViewModel()
 
-        // ✅ Collect UI State
+        val chipGroup = findViewById<com.google.android.material.chip.ChipGroup>(
+            R.id.chipGroupFilters
+        )
+
+        chipGroup.setOnCheckedStateChangeListener {_,checkedIds ->
+            when (checkedIds.firstOrNull()){
+
+                R.id.chipAll ->
+                    viewModel.setFilter(AdminFilter.ALL)
+
+                R.id.chipHigh ->
+                    viewModel.setFilter(AdminFilter.HIGH_PRIORITY)
+
+                R.id.chipFloor1 ->
+                    viewModel.setFilter(AdminFilter.FLOOR_1)
+
+                R.id.chipIT ->
+                    viewModel.setFilter(AdminFilter.IT)
+
+                R.id.chipWater ->
+                    viewModel.setFilter(AdminFilter.WATER)
+            }
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
+
                     when (state) {
                         is AdminState.Loading -> {
                             progressBar.visibility = View.VISIBLE
                             recyclerView.visibility = View.GONE
                             emptyStateTextView.visibility = View.GONE
+
                         }
 
                         is AdminState.Success -> {
@@ -82,18 +112,17 @@ class AdminDashboardActivity : AppCompatActivity() {
                         }
                     }
                 }
+
             }
         }
-
-        // ✅ Load reports
         viewModel.loadReports()
 
-        // ✅ Logout (fix crash)
+
         btnLogoutAdmin.setOnClickListener {
-            // 1) Stop all running collectors / flows in this Activity
+
             lifecycleScope.coroutineContext.cancelChildren()
 
-            // 2) Sign out
+
             auth.signOut()
 
             // 3) Navigate to Login

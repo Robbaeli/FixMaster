@@ -2,6 +2,7 @@ package com.ma25.fixmaster.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Spinner
@@ -34,17 +35,27 @@ class ReportDetailActivity : AppCompatActivity() {
         spinner = findViewById(R.id.spinnerStatus)
 
         //Spinner värden
-        val statuses = listOf("Ny","Påbörjad","Klar")
+        val statuses = listOf ("Ny","Påbörjad","Klar")
 
-        val adapter = android.widget.ArrayAdapter(
+        val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
             statuses
+
         )
         adapter.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item
+
         )
-                spinner.adapter = adapter
+        spinner.adapter = adapter
+
+        val currentStatus = intent.getStringExtra("currentStatus")
+
+        val position = statuses.indexOf(currentStatus)
+
+        if (position >= 0) {
+            spinner.setSelection(position)
+        }
 
     }
 

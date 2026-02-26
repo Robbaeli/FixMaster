@@ -51,7 +51,29 @@ class ReportAdapter(
         }
 
         holder.tvPriority.text = report.description
-        holder.tvTime.text = "Just nu"
+        val timeMillis = report.timestamp?.toDate()?.time
+
+        if (timeMillis != null) {
+            holder.tvTime.text =getTimeAgo(timeMillis)
+        } else {
+            holder.tvTime.text=""
+        }
+    }
+
+    private fun getTimeAgo(timestamp: Long): String {
+        val diff =System.currentTimeMillis() - timestamp
+
+        val minutes = diff / (1000 * 60)
+        val hours = diff / (1000 * 60 * 60)
+        val days = diff / (1000 * 60 * 60 *24)
+
+        return when {
+            minutes < 1 -> "Just nu"
+            minutes < 60 -> "$minutes min sedan"
+            hours < 24 -> "$hours h sedan"
+            else -> "$days dagar sedan"
+        }
+
     }
 
     override fun getItemCount(): Int = reports.size
