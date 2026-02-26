@@ -58,7 +58,7 @@ class ReportViewModel : ViewModel() {
 
                 _state.value = ReportState.Success
             } catch (e: Exception) {
-                _state.value = ReportState.Error("Kunde inte skicka rapporten.")
+                _state.value = ReportState.Error("Fel: ${e.message}")
             }
         }
     }
