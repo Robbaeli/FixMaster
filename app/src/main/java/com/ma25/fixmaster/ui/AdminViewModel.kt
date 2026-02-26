@@ -1,6 +1,5 @@
 package com.ma25.fixmaster.ui
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ma25.fixmaster.repository.ObjectRepository
@@ -17,13 +16,15 @@ class AdminViewModel : ViewModel() {
     private val _state = MutableStateFlow<AdminState>(AdminState.Loading)
     val state: StateFlow<AdminState> = _state.asStateFlow()
 
-
     fun loadReports() {
         viewModelScope.launch {
             _state.value = AdminState.Loading
-
-            repository.observeReports().collect { reports ->
-                _state.value = AdminState.Success(reports)
+            try {
+                repository.observeReports().collect { reports ->
+                    _state.value = AdminState.Success(reports)
+                }
+            } catch (e: Exception) {
+                _state.value = AdminState.Error(e.message ?: "Unknown error")
             }
         }
     }

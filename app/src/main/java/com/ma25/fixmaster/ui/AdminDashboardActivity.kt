@@ -11,7 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
+import com.ma25.fixmaster.LoginActivity
 import com.ma25.fixmaster.R
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 class AdminDashboardActivity : AppCompatActivity() {
@@ -20,9 +24,10 @@ class AdminDashboardActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var viewModel: AdminViewModel
     private lateinit var adapter: ReportAdapter
-
     private lateinit var emptyStateTextView: TextView
+    private lateinit var btnLogoutAdmin: MaterialButton
 
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,8 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerViewReports)
         progressBar = findViewById(R.id.progressBar)
+        emptyStateTextView = findViewById(R.id.tvEmptyState)
+        btnLogoutAdmin = findViewById(R.id.btnLogoutAdmin)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -39,22 +46,18 @@ class AdminDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
         recyclerView.adapter = adapter
-        emptyStateTextView = findViewById(R.id.tvEmptyState)
-
-
 
         viewModel = AdminViewModel()
 
+        // ✅ Collect UI State
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
-
                     when (state) {
                         is AdminState.Loading -> {
                             progressBar.visibility = View.VISIBLE
                             recyclerView.visibility = View.GONE
                             emptyStateTextView.visibility = View.GONE
-
                         }
 
                         is AdminState.Success -> {
@@ -63,6 +66,7 @@ class AdminDashboardActivity : AppCompatActivity() {
                             if (state.reports.isEmpty()) {
                                 recyclerView.visibility = View.GONE
                                 emptyStateTextView.visibility = View.VISIBLE
+                                emptyStateTextView.text = "Inga ärenden hittades"
                             } else {
                                 recyclerView.visibility = View.VISIBLE
                                 emptyStateTextView.visibility = View.GONE
@@ -78,9 +82,25 @@ class AdminDashboardActivity : AppCompatActivity() {
                         }
                     }
                 }
-
             }
         }
+
+        // ✅ Load reports
         viewModel.loadReports()
+
+        // ✅ Logout (fix crash)
+        btnLogoutAdmin.setOnClickListener {
+            // 1) Stop all running collectors / flows in this Activity
+            lifecycleScope.coroutineContext.cancelChildren()
+
+            // 2) Sign out
+            auth.signOut()
+
+            // 3) Navigate to Login
+            val i = Intent(this, LoginActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(i)
+            finish()
+        }
     }
 }

@@ -49,11 +49,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
 
     // Firebase bibliotek
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
     // AndroidX & UI (Dessa är de som krävde SDK 36)
     implementation(libs.androidx.core.ktx)
@@ -72,6 +74,5 @@ dependencies {
     // Lifecycle & ML Kit
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
 }

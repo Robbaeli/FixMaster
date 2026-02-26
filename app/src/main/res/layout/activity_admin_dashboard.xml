@@ -17,8 +17,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -34,12 +32,24 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewReports"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_below="@id/adminTitle"
+        android:layout_above="@id/btnLogoutAdmin"
         android:layout_marginTop="16dp"
         tools:listitem="@android:layout/simple_list_item_2" />
+
+    <!-- Logout Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogoutAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/status_red"
+        android:text="Logga ut"
+        android:textAllCaps="false" />
 
 </RelativeLayout>

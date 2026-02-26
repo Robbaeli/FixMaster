@@ -8,16 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.ma25.fixmaster.ui.AdminDashboardActivity
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     private lateinit var etEmail: TextInputEditText
     private lateinit var etPassword: TextInputEditText
     private lateinit var btnLogin: MaterialButton
     private lateinit var progress: View
-    private lateinit var tvCreateAccount: View
     private lateinit var tvForgotPassword: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,19 +27,18 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
         progress = findViewById(R.id.progress)
-        tvCreateAccount = findViewById(R.id.tvCreateAccount)
         tvForgotPassword = findViewById(R.id.tvForgotPassword)
 
-        btnLogin.setOnClickListener { login() }
+        // ✅ Backend-only: vi tar bort CreateAccount i appen (ingen click listener här)
+        // Om din XML fortfarande har tvCreateAccount, kan du ta bort den där också.
 
-        tvCreateAccount.setOnClickListener {
-            startActivity(Intent(this, CreateAccountActivity::class.java))
-        }
+        btnLogin.setOnClickListener { login() }
 
         tvForgotPassword.setOnClickListener {
             startActivity(Intent(this, ResetPasswordActivity::class.java))
@@ -46,11 +47,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Auto-login: Skickar nu alla direkt till UserDashboardActivity
+
+        // ✅ Auto-login: hämta role och navigera rätt
         val current = auth.currentUser
         if (current != null) {
             setLoading(true)
-            goTo(UserDashboardActivity::class.java)
+            fetchRoleAndNavigate(current.uid)
         }
     }
 
@@ -65,19 +67,49 @@ class LoginActivity : AppCompatActivity() {
 
         setLoading(true)
         auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                val uid = it.user?.uid
+            .addOnSuccessListener { result ->
+                val uid = result.user?.uid
                 if (uid == null) {
                     setLoading(false)
                     Toast.makeText(this, "Login failed (no uid)", Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
-                // Skickar användaren direkt till UserDashboardActivity vid lyckad inloggning
-                goTo(UserDashboardActivity::class.java)
+
+                // ✅ Här: hämta role och navigera (admin/user)
+                fetchRoleAndNavigate(uid)
             }
             .addOnFailureListener { e ->
                 setLoading(false)
                 Toast.makeText(this, e.message ?: "Login failed", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun fetchRoleAndNavigate(uid: String) {
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { doc ->
+                val role = doc.getString("role")
+
+                if (role.isNullOrBlank()) {
+                    setLoading(false)
+                    Toast.makeText(this, "No role found for this user", Toast.LENGTH_LONG).show()
+                    auth.signOut()
+                    return@addOnSuccessListener
+                }
+
+                when (role) {
+                    "admin" -> goTo(AdminDashboardActivity::class.java)
+                    "user" -> goTo(UserDashboardActivity::class.java)
+                    else -> {
+                        setLoading(false)
+                        Toast.makeText(this, "Unknown role: $role", Toast.LENGTH_LONG).show()
+                        auth.signOut()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                setLoading(false)
+                Toast.makeText(this, e.message ?: "Failed to load role", Toast.LENGTH_LONG).show()
+                auth.signOut()
             }
     }
 
