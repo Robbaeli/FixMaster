@@ -6,13 +6,13 @@ plugins {
 
 android {
     namespace = "com.ma25.fixmaster"
-    // HÄR ÄR FIXEN: Ändra från 35 till 36
+
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ma25.fixmaster"
         minSdk = 26
-        targetSdk = 35 // Du kan ha 35 här eller 36, men compileSdk MÅSTE vara 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -53,6 +53,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation("com.google.firebase:firebase-storage-ktx")
 
     // AndroidX & UI (Dessa är de som krävde SDK 36)
     implementation(libs.androidx.core.ktx)
