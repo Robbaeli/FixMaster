@@ -37,12 +37,50 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
 
-            <RadioButton android:id="@+id/rbBroken" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Trasig" android:textColor="@color/fm_text_primary" />
-            <RadioButton android:id="@+id/rbLeak" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Läckage" android:textColor="@color/fm_text_primary" />
-            <RadioButton android:id="@+id/rbOther" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Annat" android:textColor="@color/fm_text_primary" />
+            <RadioButton
+                android:id="@+id/rbBroken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trasig"
+                android:textColor="@color/fm_text_primary" />
+
+            <RadioButton
+                android:id="@+id/rbLeak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Läckage"
+                android:textColor="@color/fm_text_primary" />
+
+            <RadioButton
+                android:id="@+id/rbOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Annat"
+                android:textColor="@color/fm_text_primary" />
         </RadioGroup>
 
-        <View android:layout_width="match_parent" android:layout_height="40dp" />
+        <View android:layout_width="match_parent" android:layout_height="24dp" />
+
+        <!-- ✅ NYTT: frivillig kommentar -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kommentar (valfritt)"
+            app:counterEnabled="true"
+            app:counterMaxLength="300">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:maxLines="5" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="24dp" />
+
         <ImageView
             android:id="@+id/ivPreview"
             android:layout_width="match_parent"
@@ -65,6 +103,7 @@
             app:strokeColor="@color/fm_outline"
             app:icon="@android:drawable/ic_menu_camera"
             app:iconTint="@color/fm_primary" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
