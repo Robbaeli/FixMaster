@@ -172,23 +172,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Har du inget konto? "
-                    android:textColor="#111111"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/tvCreateAccount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Skapakonto"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#2BA39A"
-                    android:clickable="true"
-                    android:focusable="true"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

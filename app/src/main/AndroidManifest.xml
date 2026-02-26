@@ -40,9 +40,7 @@
         <activity
             android:name=".ui.ReportActivity"
             android:exported="false" />
-        <activity
-            android:name=".CreateAccountActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />
@@ -50,10 +48,7 @@
             android:name=".UserDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".ReportUser"
-            android:exported="false" />
-        <activity
-            android:name=".AdminDashboardActivity"
+            android:name=".ui.ReportUser"
             android:exported="false" />
         <activity
             android:name=".ui.ReportSuccessActivity"
