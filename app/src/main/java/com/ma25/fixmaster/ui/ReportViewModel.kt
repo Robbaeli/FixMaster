@@ -47,7 +47,7 @@ class ReportViewModel : ViewModel() {
                 val newReport = IssueReport(
                     objectId = objectId,
                     objectName = objectName,
-                    qrCode = objectId,           // om objectId är QR-data i ert flöde
+                    qrCode = objectId,
                     description = faultType,
                     status = "Ny",
                     imageUrl = downloadUrl,

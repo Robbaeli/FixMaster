@@ -41,7 +41,6 @@ class ReportActivity : AppCompatActivity() {
     private lateinit var btnAttachImage: MaterialButton
     private var latestImageUri: Uri? = null
 
-    // ✅ NYTT: frivillig kommentar
     private lateinit var etComment: TextInputEditText
 
     private val takePictureLauncher =

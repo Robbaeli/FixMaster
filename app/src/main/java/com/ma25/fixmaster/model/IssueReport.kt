@@ -7,6 +7,7 @@ data class IssueReport(
 
     val objectId: String = "",
     val objectName: String = "",
+
     val qrCode: String = "",
 
     val description: String = "",

@@ -61,7 +61,6 @@
 
         <View android:layout_width="match_parent" android:layout_height="24dp" />
 
-        <!-- ✅ NYTT: frivillig kommentar -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilComment"
             android:layout_width="match_parent"
