@@ -1,6 +1,7 @@
 package com.ma25.fixmaster.ui
 
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ma25.fixmaster.model.AdminFilter
@@ -19,41 +20,61 @@ class AdminViewModel : ViewModel() {
     private val _state = MutableStateFlow<AdminState>(AdminState.Loading)
 
     private val selectedFilter = MutableStateFlow(AdminFilter.ALL)
-
     val state: StateFlow<AdminState> = _state.asStateFlow()
 
     fun setFilter(filter: AdminFilter) {
         selectedFilter.value = filter
     }
 
+    //Prioritet filter
+    private fun priorityOrder(priority: String?): Int {
+        return when (priority) {
+            "HIGH" -> 3
+            "MEDIUM"-> 2
+            "LOW" -> 1
+            else ->0
+        }
+    }
+
 
     fun loadReports() {
         viewModelScope.launch {
 
-            repository.observeReports()
-                .combine(selectedFilter) { reports, filter ->
-                    val filtered = when (filter) {
-                        AdminFilter.ALL -> reports
+            try {
 
-                        AdminFilter.HIGH_PRIORITY ->
-                            reports.filter { it.priority == "HIGH" }
+                repository.observeReports()
+                    .combine(selectedFilter) { reports, filter ->
+                       val filtered = when (filter) {
+                            AdminFilter.ALL -> reports
 
-                        AdminFilter.FLOOR_1 ->
-                            reports.filter { it.floor == "1" }
+                            AdminFilter.HIGH_PRIORITY ->
+                                reports.filter { it.priority == "HIGH" }
 
-                        AdminFilter.IT ->
-                            reports.filter { it.category == "IT" }
+                            AdminFilter.FLOOR_1 ->
+                                reports.filter { it.floor == "1" }
 
-                        AdminFilter.WATER ->
-                            reports.filter { it.category == "WATER" }
+                            AdminFilter.IT ->
+                                reports.filter { it.category == "IT" }
+
+                            AdminFilter.WATER ->
+                                reports.filter { it.category == "WATER" }
+                        }
+                        filtered.sortedWith(compareByDescending<com.ma25.fixmaster.data.model.IssueReport>{
+                            priorityOrder(it.priority)
+                        }.thenByDescending {
+                            it.timestamp?.toDate()?.time ?: 0L
+                        }
+                        )
+
                     }
-                    filtered
-                }
-                .collect { filteredReports ->
-                    _state.value = AdminState.Success(filteredReports)
-                }
+                    .collect { sortedReports ->
+                        _state.value = AdminState.Success(sortedReports)
+                    }
 
-
+            } catch (e: Exception) {
+                _state.value = AdminState.Error("Failed to load reports")
+            }
         }
+
     }
 }

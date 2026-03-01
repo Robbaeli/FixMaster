@@ -9,7 +9,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.ma25.fixmaster.ui.AdminDashboardActivity
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -97,7 +97,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 when (role) {
-                    "admin" -> goTo(AdminDashboardActivity::class.java)
+
+                    "admin" -> goTo(UserDashboardActivity::class.java)
                     "user" -> goTo(UserDashboardActivity::class.java)
                     else -> {
                         setLoading(false)

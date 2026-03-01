@@ -62,7 +62,8 @@ class ObjectRepository : ReportRepository {
                 }
 
                 val reports = snapshot?.documents?.mapNotNull { doc ->
-                    doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
+                    doc.toObject(IssueReport::class.java)
+                        ?.copy(id = doc.id)
                 } ?: emptyList()
 
                 trySend(reports)
