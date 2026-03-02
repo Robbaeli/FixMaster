@@ -7,20 +7,16 @@ data class IssueReport(
     val objectId: String = "",
     val objectName: String = "",
     val description: String = "",
-    val status: String = "Inskickad",
-    val imageUrl: String? = null, // <--- ROBIN: Nytt fält för bildlänk (US4)
-    val timestamp: Timestamp? = null,
+    val comment: String? = null,
+    val imageUrl: String? = null,
+    val status: String = "Ny",
+    val timestamp: Timestamp = Timestamp.now(),
     val completedTimestamp: Timestamp? = null,
     val createdBy: String="",
     val priority: String="",
     val floor: String="",
-    val category: String=""
-    val status: String = "Ny",
-
+    val category: String="",
     val qrCode: String = "",
 
-    val timestamp: Timestamp? = null,
 
-    // ✅ IMPORTANT: this is required for user filtering + Firestore rules
-    val createdBy: String = ""
 )
