@@ -1,6 +1,7 @@
 package com.ma25.fixmaster.model
 
 import com.google.firebase.Timestamp
+//import com.ma25.fixmaster.model.Priority väntar på att fråga Robin
 
 data class IssueReport(
     val id: String = "",
@@ -8,7 +9,6 @@ data class IssueReport(
     val objectId: String = "",
     val objectName: String = "",
 
-    val qrCode: String = "",
 
     val description: String = "",
     val comment: String? = null,

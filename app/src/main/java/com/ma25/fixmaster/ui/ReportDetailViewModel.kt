@@ -14,7 +14,7 @@ class ReportDetailViewModel (
     private val _state = MutableStateFlow<DetailState>(DetailState.Idle)
     val state: StateFlow<DetailState> = _state
 
-    fun updateStatus (reportId: String, newStatus: String) {
+    fun updateStatus (reportId: String, newStatus: String, newPriority: String) {
         viewModelScope.launch {
             _state.value = DetailState.Loading
             try {

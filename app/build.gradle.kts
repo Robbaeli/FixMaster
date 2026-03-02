@@ -74,4 +74,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
+
+    // För ChipGroup filtrering
+    implementation("com.google.android.material:material:1.11.0")
+
+    //Glide = för att kunna se bilderna activity_report_detail.xml
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
