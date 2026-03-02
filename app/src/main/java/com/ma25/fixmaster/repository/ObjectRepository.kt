@@ -93,10 +93,26 @@ class ObjectRepository : ReportRepository {
         awaitClose { listener.remove() }
     }
 
+    // Rapport av ID
+
+    suspend fun getReportById(reportId: String): IssueReport? {
+        return try {
+            val doc = db.collection("reports")
+                .document(reportId)
+                .get()
+                .await()
+
+            doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+
     // ========================
     // ADMIN - update status
     // ========================
-    override suspend fun updateReportStatus(reportId: String, newStatus: String) {
+    override suspend fun updateReportStatus(reportId: String, newStatus: String,) {
         val updateData = mutableMapOf<String, Any>(
             "status" to newStatus
         )

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.storage.FirebaseStorage // <--- Ny import
 import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.Priority // <-- Ny import för priority
 import com.ma25.fixmaster.repository.ObjectRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,14 @@ class ReportViewModel : ViewModel() {
     val state: StateFlow<ReportState> = _state
 
     // <--- ROBIN: Lade till "imageUri: Uri?" i slutet
-    fun submitReport(objectId: String, objectName: String, faultType: String ,createdBy: String, imageUri: Uri?) {
+    fun submitReport(
+        objectId: String,
+        objectName: String,
+        faultType: String,
+        createdBy: String,
+        priority: Priority,
+        imageUri: Uri?)
+    {
         _state.value = ReportState.Loading
 
         viewModelScope.launch {
@@ -49,7 +57,8 @@ class ReportViewModel : ViewModel() {
                     description = faultType,
                     status = "Ny",
                     imageUrl = downloadUrl, // <--- ROBIN: Skickar med länken hit (US4)
-                    createdBy = createdBy
+                    createdBy = createdBy,
+                    priority = priority.name
                 )
 
                 // Här kan vi  byta till ObjectRepository om vi  vill köra Firebase tex vid att skapa manuellt objekt

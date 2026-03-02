@@ -42,6 +42,43 @@
             <RadioButton android:id="@+id/rbOther" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Annat" android:textColor="@color/fm_text_primary" />
         </RadioGroup>
 
+        <!-- Micke lägger till Prioritet Sektion -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prioritet"
+            android:textColor="@color/fm_text_secondary"/>
+
+        <RadioGroup
+            android:id="@+id/rgPriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <RadioButton
+                android:id="@+id/rbLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Låg"
+                android:checked="true"
+                android:textColor="@color/fm_text_primary"/>
+
+        <RadioButton
+            android:id="@+id/rbMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium"
+            android:textColor="@color/fm_text_primary"/>
+
+        <RadioButton
+            android:id="@+id/rbHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hög"
+            android:textColor="@color/fm_text_primary"/>
+        </RadioGroup>
+
         <View android:layout_width="match_parent" android:layout_height="40dp" />
         <ImageView
             android:id="@+id/ivPreview"
