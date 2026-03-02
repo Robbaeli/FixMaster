@@ -1,6 +1,6 @@
 package com.ma25.fixmaster.ui
 
-import com.ma25.fixmaster.data.model.ReportObject
+import com.ma25.fixmaster.model.ReportObject
 
 sealed class QrState {
     object Idle : QrState()

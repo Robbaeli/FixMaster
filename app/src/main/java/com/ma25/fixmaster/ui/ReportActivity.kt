@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.ma25.fixmaster.R
+import com.ma25.fixmaster.model.Priority
 import kotlinx.coroutines.launch
 import java.io.File
 

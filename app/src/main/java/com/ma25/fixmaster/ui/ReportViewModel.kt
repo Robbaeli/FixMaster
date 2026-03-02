@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.storage.FirebaseStorage
 import com.ma25.fixmaster.model.IssueReport
+import com.ma25.fixmaster.model.Priority
 import com.ma25.fixmaster.repository.ObjectRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import org.w3c.dom.Comment
 import java.util.UUID
 
 class ReportViewModel : ViewModel() {
@@ -28,11 +30,9 @@ class ReportViewModel : ViewModel() {
         faultType: String,
         createdBy: String,
         priority: Priority,
-        imageUri: Uri?)
-    {
         imageUri: Uri?,
-        comment: String?
-    ) {
+        comment: String?)
+    {
         _state.value = ReportState.Loading
 
         viewModelScope.launch {
@@ -56,9 +56,7 @@ class ReportViewModel : ViewModel() {
                     status = "Ny",
                     imageUrl = downloadUrl, // <--- ROBIN: Skickar med länken hit (US4)
                     createdBy = createdBy,
-                    priority = priority.name
-                    imageUrl = downloadUrl,
-                    createdBy = createdBy,
+                    priority = priority.name,
                     comment = comment
                 )
 

@@ -3,7 +3,7 @@ package com.ma25.fixmaster.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.model.AdminFilter
 import com.ma25.fixmaster.repository.ObjectRepository
 import com.ma25.fixmaster.repository.ReportRepository
