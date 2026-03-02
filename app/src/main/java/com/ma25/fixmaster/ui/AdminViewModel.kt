@@ -4,7 +4,6 @@ package com.ma25.fixmaster.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.model.AdminFilter
 import com.ma25.fixmaster.repository.ObjectRepository
 import com.ma25.fixmaster.repository.ReportRepository
@@ -45,7 +44,7 @@ class AdminViewModel : ViewModel() {
 
                 repository.observeReports()
                     .combine(selectedFilter) { reports, filter ->
-                       val filtered = when (filter) {
+                        val filtered = when (filter) {
                             AdminFilter.ALL -> reports
 
                             AdminFilter.HIGH_PRIORITY ->
@@ -56,27 +55,14 @@ class AdminViewModel : ViewModel() {
 
                             AdminFilter.IT ->
                                 reports.filter { it.category == "IT" }
-                        AdminFilter.WATER ->
-                            reports.filter { it.category == "WATER" }
-                    }
-                    filtered
-                        .sortedWith(
-                            compareByDescending<IssueReport> { priorityWeight(it.priority)
-                            }.thenByDescending {
-                                it.timestamp?.toDate()?.time ?: 0L }
-                        )
-                }
-                .collect { filteredReports ->
-                    _state.value = AdminState.Success(filteredReports)
-                }
 
                             AdminFilter.WATER ->
                                 reports.filter { it.category == "WATER" }
                         }
-                        filtered.sortedWith(compareByDescending<com.ma25.fixmaster.data.model.IssueReport>{
+                        filtered.sortedWith(compareByDescending<com.ma25.fixmaster.model.IssueReport>{
                             priorityOrder(it.priority)
                         }.thenByDescending {
-                            it.timestamp?.toDate()?.time ?: 0L
+                            it.timestamp.toDate().time
                         }
                         )
 
@@ -85,7 +71,7 @@ class AdminViewModel : ViewModel() {
                         _state.value = AdminState.Success(sortedReports)
                     }
 
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 _state.value = AdminState.Error("Failed to load reports")
             }
         }

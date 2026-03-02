@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import org.w3c.dom.Comment
 import java.util.UUID
 
 class ReportViewModel : ViewModel() {
