@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +42,7 @@ class ReportUser : AppCompatActivity() {
             return
         }
 
-        Toast.makeText(this, "uid=$uid", Toast.LENGTH_SHORT).show()
+
 
         progress.visibility = View.VISIBLE
         empty.visibility = View.GONE
@@ -51,7 +50,7 @@ class ReportUser : AppCompatActivity() {
 
         lifecycleScope.launch {
             repo.observeMyReports(uid).collect { myReports ->
-                Toast.makeText(this@ReportUser, "myReports size=${myReports.size}", Toast.LENGTH_SHORT).show()
+
 
                 progress.visibility = View.GONE
 
