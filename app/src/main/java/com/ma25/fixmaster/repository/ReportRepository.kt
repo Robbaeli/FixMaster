@@ -1,7 +1,8 @@
 package com.ma25.fixmaster.repository
 
-import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.IssueReport
 import kotlinx.coroutines.flow.Flow
+import com.ma25.fixmaster.model.Priority
 
 interface ReportRepository {
     suspend fun addReport(report: IssueReport)

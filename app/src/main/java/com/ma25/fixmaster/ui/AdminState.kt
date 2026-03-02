@@ -1,6 +1,6 @@
 package com.ma25.fixmaster.ui
 
-import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.IssueReport
 
 
 sealed class AdminState {

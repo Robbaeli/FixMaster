@@ -1,5 +1,6 @@
 package com.ma25.fixmaster.ui
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ma25.fixmaster.R
-import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.IssueReport
 
 
 class ReportAdapter(
@@ -40,17 +41,50 @@ class ReportAdapter(
         holder.tvObjectName.text = report.objectName
         holder.tvLocation.text = report.objectId
         holder.tvStatus.text = report.status
+
         when (report.status) {
-        "Ny"-> holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.status_red)
-        )
-            "Påbörjad"-> holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.status_yellow)
+            "Ny" -> {
+                holder.tvStatus.setBackgroundResource(R.drawable.status_new)
+            holder.tvStatus.setTextColor(
+                ContextCompat.getColor(holder.itemView.context, R.color.status_red)
             )
-            "Klar"-> holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.status_green)
+        }
+
+        "Påbörjad"-> {
+            holder.tvStatus.setBackgroundColor(
+                ContextCompat.getColor(holder.itemView.context, R.color.status_yellow)
             )
+            holder.tvStatus.setTextColor(Color.BLACK)
+        }
+
+            "Klar"-> {
+                holder.tvStatus.setBackgroundColor(
+                    ContextCompat.getColor(holder.itemView.context, R.color.status_green)
+                )
+                holder.tvStatus.setTextColor(Color.WHITE)
+            }
 
         }
 
-        holder.tvPriority.text = report.description
+        holder.tvPriority.text = report.priority
+
+        when (report.priority) {
+            "HIGH" -> {
+                holder.tvPriority.setBackgroundResource(R.drawable.priority_high)
+                holder.tvPriority.setTextColor(Color.WHITE)
+
+            }
+            "MEDIUM" -> {
+                holder.tvPriority.setBackgroundResource(R.drawable.priority_medium)
+                holder.tvPriority.setTextColor(Color.BLACK)
+            }
+            else -> { //LOW
+                holder.tvPriority.setBackgroundResource(R.drawable.priority_low)
+                holder.tvPriority.setTextColor(Color.BLACK)
+            }
+
+        }
+
         val timeMillis = report.timestamp?.toDate()?.time
 
         if (timeMillis != null) {

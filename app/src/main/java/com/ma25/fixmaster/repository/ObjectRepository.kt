@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.data.model.ReportObject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -94,10 +94,26 @@ class ObjectRepository : ReportRepository {
         awaitClose { listener.remove() }
     }
 
+    // Rapport av ID
+
+    suspend fun getReportById(reportId: String): IssueReport? {
+        return try {
+            val doc = db.collection("reports")
+                .document(reportId)
+                .get()
+                .await()
+
+            doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+
     // ========================
     // ADMIN - update status
     // ========================
-    override suspend fun updateReportStatus(reportId: String, newStatus: String) {
+    override suspend fun updateReportStatus(reportId: String, newStatus: String,) {
         val updateData = mutableMapOf<String, Any>(
             "status" to newStatus
         )
