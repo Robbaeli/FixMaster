@@ -97,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 when (role) {
-                    "admin" -> goTo(AdminDashboardActivity::class.java)
+                    "admin" -> goTo(UserDashboardActivity::class.java)
                     "user" -> goTo(UserDashboardActivity::class.java)
                     else -> {
                         setLoading(false)
