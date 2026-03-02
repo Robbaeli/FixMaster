@@ -68,10 +68,13 @@
                 android:id="@+id/tvPriority"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:text="Låg"
-                android:textColor="@android:color/black"
-                android:background="@android:color/holo_green_light"/>
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="LOW"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 

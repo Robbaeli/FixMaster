@@ -3,6 +3,7 @@ package com.ma25.fixmaster.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ma25.fixmaster.data.model.IssueReport
 import com.ma25.fixmaster.model.AdminFilter
 import com.ma25.fixmaster.repository.ObjectRepository
 import com.ma25.fixmaster.repository.ReportRepository
@@ -24,6 +25,14 @@ class AdminViewModel : ViewModel() {
 
     fun setFilter(filter: AdminFilter) {
         selectedFilter.value = filter
+    }
+
+    private fun priorityWeight(priority: String): Int {
+        return when (priority) {
+            "HIGH" -> 3
+            "MEDIUM" -> 2
+            else -> 1
+        }
     }
 
 
@@ -48,6 +57,11 @@ class AdminViewModel : ViewModel() {
                             reports.filter { it.category == "WATER" }
                     }
                     filtered
+                        .sortedWith(
+                            compareByDescending<IssueReport> { priorityWeight(it.priority)
+                            }.thenByDescending {
+                                it.timestamp?.toDate()?.time ?: 0L }
+                        )
                 }
                 .collect { filteredReports ->
                     _state.value = AdminState.Success(filteredReports)

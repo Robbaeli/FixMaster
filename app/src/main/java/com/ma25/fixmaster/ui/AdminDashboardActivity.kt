@@ -15,7 +15,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.ma25.fixmaster.LoginActivity
 import com.ma25.fixmaster.R
-import kotlinx.coroutines.cancelChildren
+import com.ma25.fixmaster.model.AdminFilter
 import kotlinx.coroutines.launch
 
 class AdminDashboardActivity : AppCompatActivity() {
@@ -120,7 +120,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         btnLogoutAdmin.setOnClickListener {
 
-            lifecycleScope.coroutineContext.cancelChildren()
+
 
 
             auth.signOut()

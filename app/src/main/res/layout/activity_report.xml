@@ -59,27 +59,44 @@
                 android:textColor="@color/fm_text_primary" />
         </RadioGroup>
 
-        <View android:layout_width="match_parent" android:layout_height="24dp" />
+        <!-- Micke lägger till Prioritet Sektion -->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilComment"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prioritet"
+            android:textColor="@color/fm_text_secondary"/>
+
+        <RadioGroup
+            android:id="@+id/rgPriority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Kommentar (valfritt)"
-            app:counterEnabled="true"
-            app:counterMaxLength="300">
+            android:layout_marginTop="12dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etComment"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/rbLow"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="2"
-                android:maxLines="5" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="Låg"
+                android:checked="true"
+                android:textColor="@color/fm_text_primary"/>
 
-        <View android:layout_width="match_parent" android:layout_height="24dp" />
+        <RadioButton
+            android:id="@+id/rbMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium"
+            android:textColor="@color/fm_text_primary"/>
 
+        <RadioButton
+            android:id="@+id/rbHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hög"
+            android:textColor="@color/fm_text_primary"/>
+        </RadioGroup>
+
+        <View android:layout_width="match_parent" android:layout_height="40dp" />
         <ImageView
             android:id="@+id/ivPreview"
             android:layout_width="match_parent"

@@ -31,6 +31,7 @@ class ReportActivity : AppCompatActivity() {
 
     private lateinit var tvTitle: TextView
     private lateinit var rgFaultType: RadioGroup
+    private lateinit var rgPriority: RadioGroup // <--- NYTT: RadioGroup för prioritering
     private lateinit var btnSubmit: Button
     private lateinit var progress: ProgressBar
 
@@ -89,9 +90,7 @@ class ReportActivity : AppCompatActivity() {
         progress = findViewById(R.id.progress)
         ivPreview = findViewById(R.id.ivPreview)
         btnAttachImage = findViewById(R.id.btnAttachImage)
-
-        // ✅ NYTT
-        etComment = findViewById(R.id.etComment)
+        rgPriority = findViewById(R.id.rgPriority) // <--- NYTT: RadioGroup för prioritering
     }
 
     private fun renderHeader() {
@@ -103,6 +102,18 @@ class ReportActivity : AppCompatActivity() {
 
         btnSubmit.setOnClickListener {
             val selectedId = rgFaultType.checkedRadioButtonId
+            //Prioritet som Micke har lagt till
+            val selectedPriorityId = rgPriority.checkedRadioButtonId
+
+            val priority = when (selectedPriorityId) {
+                R.id.rbHigh -> Priority.HIGH
+                R.id.rbMedium -> Priority.MEDIUM
+                R.id.rbLow -> Priority.LOW
+                else -> Priority.LOW
+            }
+
+
+
             if (selectedId == -1) {
                 Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -124,6 +135,7 @@ class ReportActivity : AppCompatActivity() {
                 objectId = objectId,
                 objectName = objectName,
                 faultType = faultType,
+                priority = priority, //Micke la till priority
                 createdBy = uid,
                 imageUri = latestImageUri,
                 comment = comment

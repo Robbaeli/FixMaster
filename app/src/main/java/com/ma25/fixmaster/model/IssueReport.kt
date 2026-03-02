@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.data.model
+package com.ma25.fixmaster.model
 
 import com.google.firebase.Timestamp
 
@@ -17,6 +17,5 @@ data class IssueReport(
     val floor: String="",
     val category: String="",
     val qrCode: String = "",
-
 
 )

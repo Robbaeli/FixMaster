@@ -21,11 +21,15 @@ class ReportViewModel : ViewModel() {
     private val _state = MutableStateFlow<ReportState>(ReportState.Idle)
     val state: StateFlow<ReportState> = _state
 
+    // <--- ROBIN: Lade till "imageUri: Uri?" i slutet
     fun submitReport(
         objectId: String,
         objectName: String,
         faultType: String,
         createdBy: String,
+        priority: Priority,
+        imageUri: Uri?)
+    {
         imageUri: Uri?,
         comment: String?
     ) {
@@ -50,6 +54,9 @@ class ReportViewModel : ViewModel() {
                     qrCode = objectId,
                     description = faultType,
                     status = "Ny",
+                    imageUrl = downloadUrl, // <--- ROBIN: Skickar med länken hit (US4)
+                    createdBy = createdBy,
+                    priority = priority.name
                     imageUrl = downloadUrl,
                     createdBy = createdBy,
                     comment = comment
