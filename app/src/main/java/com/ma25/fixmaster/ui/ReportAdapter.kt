@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ma25.fixmaster.R
-import com.ma25.fixmaster.data.model.IssueReport
+import com.ma25.fixmaster.model.IssueReport
 
 
 class ReportAdapter(

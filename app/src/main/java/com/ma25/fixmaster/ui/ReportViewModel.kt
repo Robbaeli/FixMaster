@@ -1,24 +1,21 @@
 package com.ma25.fixmaster.ui
 
-import android.net.Uri // <--- Ny import
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.storage.FirebaseStorage // <--- Ny import
-import com.ma25.fixmaster.data.model.IssueReport
-import com.ma25.fixmaster.model.Priority // <-- Ny import för priority
+import com.google.firebase.storage.FirebaseStorage
+import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.repository.ObjectRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await // <--- Ny import
-import java.util.UUID // <--- Ny import
+import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class ReportViewModel : ViewModel() {
 
     private val repository = ObjectRepository()
-
-    // <--- ROBIN: Initierar Firebase Storage (US4)
     private val storage = FirebaseStorage.getInstance()
 
     private val _state = MutableStateFlow<ReportState>(ReportState.Idle)
@@ -33,14 +30,15 @@ class ReportViewModel : ViewModel() {
         priority: Priority,
         imageUri: Uri?)
     {
+        imageUri: Uri?,
+        comment: String?
+    ) {
         _state.value = ReportState.Loading
 
         viewModelScope.launch {
             try {
-                // Simulera nätverksfördröjning
                 delay(1000)
 
-                // <--- ROBIN: NY LOGIK BÖRJAR (Laddar upp bilden om den finns)
                 var downloadUrl: String? = null
 
                 if (imageUri != null) {
@@ -49,20 +47,21 @@ class ReportViewModel : ViewModel() {
                     ref.putFile(imageUri).await()
                     downloadUrl = ref.downloadUrl.await().toString()
                 }
-                // <--- ROBIN: NY LOGIK SLUTAR
 
                 val newReport = IssueReport(
                     objectId = objectId,
                     objectName = objectName,
+                    qrCode = objectId,
                     description = faultType,
                     status = "Ny",
                     imageUrl = downloadUrl, // <--- ROBIN: Skickar med länken hit (US4)
                     createdBy = createdBy,
                     priority = priority.name
+                    imageUrl = downloadUrl,
+                    createdBy = createdBy,
+                    comment = comment
                 )
 
-                // Här kan vi  byta till ObjectRepository om vi  vill köra Firebase tex vid att skapa manuellt objekt
-                //Micke - La till ObjectRepository
                 repository.addReport(newReport)
 
                 _state.value = ReportState.Success
