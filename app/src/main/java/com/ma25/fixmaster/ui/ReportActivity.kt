@@ -43,7 +43,7 @@ class ReportActivity : AppCompatActivity() {
     private lateinit var btnAttachImage: MaterialButton
     private var latestImageUri: Uri? = null
 
-    private lateinit var etComment: TextInputEditText
+    private lateinit var etComment: TextInputEditText //För att lägga kommentar
 
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -92,6 +92,7 @@ class ReportActivity : AppCompatActivity() {
         ivPreview = findViewById(R.id.ivPreview)
         btnAttachImage = findViewById(R.id.btnAttachImage)
         rgPriority = findViewById(R.id.rgPriority) // <--- NYTT: RadioGroup för prioritering
+        etComment = findViewById(R.id.etComment) // för att kunna lägga kommentar.
     }
 
     private fun renderHeader() {
