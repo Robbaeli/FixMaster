@@ -88,14 +88,11 @@ class ReportActivity : AppCompatActivity() {
         tvTitle = findViewById(R.id.tvObjectTitle)
         rgFaultType = findViewById(R.id.rgFaultType)
         rgPriority = findViewById(R.id.rgPriority)
-
-        etComment = findViewById(R.id.etComment)
-
         btnSubmit = findViewById(R.id.btnSubmit)
         progress = findViewById(R.id.progress)
-
         ivPreview = findViewById(R.id.ivPreview)
         btnAttachImage = findViewById(R.id.btnAttachImage)
+        etComment = findViewById(R.id.etComment)
     }
 
     private fun renderHeader() {
@@ -106,13 +103,9 @@ class ReportActivity : AppCompatActivity() {
         btnAttachImage.setOnClickListener { checkCameraPermissionAndStart() }
 
         btnSubmit.setOnClickListener {
-            val selectedFaultId = rgFaultType.checkedRadioButtonId
-            if (selectedFaultId == -1) {
-                Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
+            val selectedId = rgFaultType.checkedRadioButtonId
             val selectedPriorityId = rgPriority.checkedRadioButtonId
+
             val priority = when (selectedPriorityId) {
                 R.id.rbHigh -> Priority.HIGH
                 R.id.rbMedium -> Priority.MEDIUM
@@ -120,18 +113,22 @@ class ReportActivity : AppCompatActivity() {
                 else -> Priority.LOW
             }
 
-            val faultType = findViewById<RadioButton>(selectedFaultId).text.toString()
+            if (selectedId == -1) {
+                Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            val faultType = findViewById<RadioButton>(selectedId).text.toString()
             val uid = FirebaseAuth.getInstance().currentUser?.uid
             if (uid == null) {
                 Toast.makeText(this, "Du är inte inloggad", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val comment = etComment.text?.toString()
+            val userComment = etComment.text?.toString()
                 .orEmpty()
                 .trim()
-                .takeIf { it.isNotBlank() } // null om tom
+                .takeIf { it.isNotBlank() }
 
             viewModel.submitReport(
                 objectId = objectId,
@@ -140,7 +137,7 @@ class ReportActivity : AppCompatActivity() {
                 priority = priority,
                 createdBy = uid,
                 imageUri = latestImageUri,
-                comment = comment
+                comment = userComment
             )
         }
     }
@@ -154,17 +151,11 @@ class ReportActivity : AppCompatActivity() {
 
                     when (state) {
                         is ReportState.Success -> {
-                            startActivity(
-                                Intent(this@ReportActivity, ReportSuccessActivity::class.java)
-                            )
+                            startActivity(Intent(this@ReportActivity, ReportSuccessActivity::class.java))
                             finish()
                         }
                         is ReportState.Error -> {
-                            Toast.makeText(
-                                this@ReportActivity,
-                                state.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this@ReportActivity, state.message, Toast.LENGTH_SHORT).show()
                         }
                         else -> Unit
                     }
@@ -184,10 +175,7 @@ class ReportActivity : AppCompatActivity() {
     }
 
     private fun startCameraWrapper() {
-        val photoFile = File(
-            externalCacheDirs.first(),
-            "temp_photo_${System.currentTimeMillis()}.jpg"
-        )
+        val photoFile = File(externalCacheDirs.first(), "temp_photo_${System.currentTimeMillis()}.jpg")
 
         val uri = androidx.core.content.FileProvider.getUriForFile(
             this,
