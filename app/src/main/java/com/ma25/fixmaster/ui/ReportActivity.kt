@@ -32,7 +32,7 @@ class ReportActivity : AppCompatActivity() {
 
     private lateinit var tvTitle: TextView
     private lateinit var rgFaultType: RadioGroup
-    private lateinit var rgPriority: RadioGroup // <--- NYTT: RadioGroup för prioritering
+    private lateinit var rgPriority: RadioGroup
     private lateinit var btnSubmit: Button
     private lateinit var progress: ProgressBar
 
@@ -87,11 +87,15 @@ class ReportActivity : AppCompatActivity() {
     private fun bindViews() {
         tvTitle = findViewById(R.id.tvObjectTitle)
         rgFaultType = findViewById(R.id.rgFaultType)
+        rgPriority = findViewById(R.id.rgPriority)
+
+        etComment = findViewById(R.id.etComment)
+
         btnSubmit = findViewById(R.id.btnSubmit)
         progress = findViewById(R.id.progress)
+
         ivPreview = findViewById(R.id.ivPreview)
         btnAttachImage = findViewById(R.id.btnAttachImage)
-        rgPriority = findViewById(R.id.rgPriority) // <--- NYTT: RadioGroup för prioritering
     }
 
     private fun renderHeader() {
@@ -102,10 +106,13 @@ class ReportActivity : AppCompatActivity() {
         btnAttachImage.setOnClickListener { checkCameraPermissionAndStart() }
 
         btnSubmit.setOnClickListener {
-            val selectedId = rgFaultType.checkedRadioButtonId
-            //Prioritet som Micke har lagt till
-            val selectedPriorityId = rgPriority.checkedRadioButtonId
+            val selectedFaultId = rgFaultType.checkedRadioButtonId
+            if (selectedFaultId == -1) {
+                Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            val selectedPriorityId = rgPriority.checkedRadioButtonId
             val priority = when (selectedPriorityId) {
                 R.id.rbHigh -> Priority.HIGH
                 R.id.rbMedium -> Priority.MEDIUM
@@ -113,14 +120,8 @@ class ReportActivity : AppCompatActivity() {
                 else -> Priority.LOW
             }
 
+            val faultType = findViewById<RadioButton>(selectedFaultId).text.toString()
 
-
-            if (selectedId == -1) {
-                Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val faultType = findViewById<RadioButton>(selectedId).text.toString()
             val uid = FirebaseAuth.getInstance().currentUser?.uid
             if (uid == null) {
                 Toast.makeText(this, "Du är inte inloggad", Toast.LENGTH_SHORT).show()
@@ -136,7 +137,7 @@ class ReportActivity : AppCompatActivity() {
                 objectId = objectId,
                 objectName = objectName,
                 faultType = faultType,
-                priority = priority, //Micke la till priority
+                priority = priority,
                 createdBy = uid,
                 imageUri = latestImageUri,
                 comment = comment
@@ -153,11 +154,17 @@ class ReportActivity : AppCompatActivity() {
 
                     when (state) {
                         is ReportState.Success -> {
-                            startActivity(Intent(this@ReportActivity, ReportSuccessActivity::class.java))
+                            startActivity(
+                                Intent(this@ReportActivity, ReportSuccessActivity::class.java)
+                            )
                             finish()
                         }
                         is ReportState.Error -> {
-                            Toast.makeText(this@ReportActivity, state.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@ReportActivity,
+                                state.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         else -> Unit
                     }
@@ -177,7 +184,10 @@ class ReportActivity : AppCompatActivity() {
     }
 
     private fun startCameraWrapper() {
-        val photoFile = File(externalCacheDirs.first(), "temp_photo_${System.currentTimeMillis()}.jpg")
+        val photoFile = File(
+            externalCacheDirs.first(),
+            "temp_photo_${System.currentTimeMillis()}.jpg"
+        )
 
         val uri = androidx.core.content.FileProvider.getUriForFile(
             this,
