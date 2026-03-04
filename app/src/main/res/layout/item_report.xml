@@ -7,29 +7,29 @@
     android:layout_margin="8dp"
     card_view:cardCornerRadius="12dp"
     card_view:cardElevation="4dp">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Topp raden -->
+        <!-- TOPP RAD -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
-            
+
             <TextView
                 android:id="@+id/tvObjectName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Kaffemaskin 3"
+                android:text="Objekt"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
-            
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
@@ -37,25 +37,79 @@
                 android:padding="6dp"
                 android:text="Ny"
                 android:textColor="@android:color/white"
-                android:background="@android:color/holo_red_dark"/>
-
+                android:background="@android:color/holo_red_dark" />
         </LinearLayout>
 
-        <!--Lokalisering-->
+        <!-- PLATS / ID -->
         <TextView
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Våning 2"
+            android:text="Plats"
             android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp" />
 
-        <!-- Botten rad -->
+        <!-- USER COMMENT PREVIEW -->
+        <LinearLayout
+            android:id="@+id/userCommentPreviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USER"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvUserCommentPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="User-kommentar…"
+                android:textSize="13sp"
+                android:maxLines="3"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <!-- ADMIN COMMENT PREVIEW -->
+        <LinearLayout
+            android:id="@+id/adminCommentPreviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADMIN"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvAdminCommentPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Admin-kommentar…"
+                android:textSize="13sp"
+                android:maxLines="3"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <!-- BOTTEN RAD -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="12dp">
+
             <TextView
                 android:id="@+id/tvTime"
                 android:layout_width="0dp"
@@ -63,7 +117,7 @@
                 android:layout_weight="1"
                 android:text="24 minuter sedan"
                 android:textSize="12sp" />
-            
+
             <TextView
                 android:id="@+id/tvPriority"
                 android:layout_width="wrap_content"
@@ -74,8 +128,7 @@
                 android:paddingBottom="6dp"
                 android:text="LOW"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"/>
-
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
     </LinearLayout>

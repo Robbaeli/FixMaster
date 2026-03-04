@@ -10,12 +10,15 @@ data class IssueReport(
     val qrCode: String = "",
     val description: String = "",
     val status: String = "",
-    val imageUrl: String? = null, // <--- ROBIN: Nytt fält för bildlänk (US4)
+    val imageUrl: String? = null,
     val timestamp: Timestamp = Timestamp.now(),
     val completedTimestamp: Timestamp? = null,
-    val createdBy: String="",
-    val priority: String="",
-    val floor: String="",
-    val category: String="",
-    val comment: String? = null
+    val createdBy: String = "",
+    val priority: String = "",
+    val floor: String = "",
+    val category: String = "",
+
+    // Två separata kommentarer
+    val userComment: String? = null,
+    val adminComment: String? = null
 )

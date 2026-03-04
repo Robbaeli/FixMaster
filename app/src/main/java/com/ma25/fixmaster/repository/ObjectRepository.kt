@@ -1,7 +1,8 @@
 package com.ma25.fixmaster.repository
 
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.model.ReportObject
@@ -13,6 +14,7 @@ import kotlinx.coroutines.tasks.await
 class ObjectRepository : ReportRepository {
 
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     // ========================
     // OBJECTS: get by QR
@@ -24,26 +26,27 @@ class ObjectRepository : ReportRepository {
                 .get()
                 .await()
 
-            if (!snapshot.isEmpty) {
-                snapshot.documents[0].toObject(ReportObject::class.java)
-            } else null
-        } catch (e: Exception) {
+            if (!snapshot.isEmpty) snapshot.documents[0].toObject(ReportObject::class.java) else null
+        } catch (_: Exception) {
             null
         }
     }
 
     // ========================
-    // CREATE REPORT (User) - OFFLINE FRIENDLY ✅
+    // CREATE REPORT (User)
     // ========================
-    override suspend fun addReport(report: IssueReport) {
-        val reportToSave = report.copy(
-            // تأكد يوجد timestamp محلي حتى Offline
-            timestamp = report.timestamp ?: Timestamp.now()
-        )
+override suspend fun addReport(report: IssueReport) {
 
-        // IMPORTANT: لا await هنا، لكي لا يعلق Offline
-        db.collection("reports").add(reportToSave)
-    }
+    val uid = auth.currentUser?.uid ?: return
+
+    val reportWithOwner = report.copy(
+        createdBy = uid,
+        timestamp = report.timestamp ?: Timestamp.now()
+    )
+
+    // Offline friendly
+    db.collection("reports").add(reportWithOwner)
+}
 
     // ========================
     // ADMIN - realtime list (status != Klar)
@@ -90,7 +93,7 @@ class ObjectRepository : ReportRepository {
     }
 
     // ========================
-    // Report by ID
+    // GET REPORT BY ID
     // ========================
     suspend fun getReportById(reportId: String): IssueReport? {
         return try {
@@ -100,18 +103,31 @@ class ObjectRepository : ReportRepository {
                 .await()
 
             doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
 
     // ========================
-    // ADMIN - update status
+    // ADMIN - update status + priority + adminComment
     // ========================
-    override suspend fun updateReportStatus(reportId: String, newStatus: String) {
+    override suspend fun updateReport(
+        reportId: String,
+        newStatus: String,
+        newPriority: String,
+        adminComment: String?
+    ) {
         val updateData = mutableMapOf<String, Any>(
-            "status" to newStatus
+            "status" to newStatus,
+            "priority" to newPriority
         )
+
+        if (!adminComment.isNullOrBlank()) {
+            updateData["adminComment"] = adminComment
+        } else {
+            // om admin rensar fältet -> spara null
+            updateData["adminComment"] = FieldValue.delete()
+        }
 
         if (newStatus == "Klar") {
             updateData["completedTimestamp"] = FieldValue.serverTimestamp()
