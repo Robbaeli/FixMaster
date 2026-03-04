@@ -92,7 +92,7 @@ class ReportActivity : AppCompatActivity() {
         ivPreview = findViewById(R.id.ivPreview)
         btnAttachImage = findViewById(R.id.btnAttachImage)
         rgPriority = findViewById(R.id.rgPriority) // <--- NYTT: RadioGroup för prioritering
-        etComment = findViewById(R.id.etComment) // för att kunna lägga kommentar.
+       // etComment = findViewById(R.id.etComment) // för att kunna lägga kommentar.
     }
 
     private fun renderHeader() {
