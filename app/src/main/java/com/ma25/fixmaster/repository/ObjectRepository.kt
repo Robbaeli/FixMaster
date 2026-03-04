@@ -27,7 +27,7 @@ class ObjectRepository : ReportRepository {
                 .await()
 
             if (!snapshot.isEmpty) snapshot.documents[0].toObject(ReportObject::class.java) else null
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -35,18 +35,18 @@ class ObjectRepository : ReportRepository {
     // ========================
     // CREATE REPORT (User)
     // ========================
-    override suspend fun addReport(report: IssueReport) {
-        val uid = auth.currentUser?.uid ?: return
+override suspend fun addReport(report: IssueReport) {
 
-        val reportWithOwner = report.copy(
-            createdBy = uid,
-            timestamp = Timestamp.now()
-        )
+    val uid = auth.currentUser?.uid ?: return
 
-        db.collection("reports")
-            .add(reportWithOwner)
-            .await()
-    }
+    val reportWithOwner = report.copy(
+        createdBy = uid,
+        timestamp = report.timestamp ?: Timestamp.now()
+    )
+
+    // Offline friendly
+    db.collection("reports").add(reportWithOwner)
+}
 
     // ========================
     // ADMIN - realtime list (status != Klar)
@@ -103,7 +103,7 @@ class ObjectRepository : ReportRepository {
                 .await()
 
             doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }

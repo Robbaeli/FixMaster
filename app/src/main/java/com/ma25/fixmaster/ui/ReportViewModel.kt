@@ -1,19 +1,7 @@
-package com.ma25.fixmaster.ui
-
-import android.net.Uri
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.google.firebase.Timestamp
-import com.ma25.fixmaster.model.IssueReport
-import com.ma25.fixmaster.model.Priority
-import com.ma25.fixmaster.repository.ObjectRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-
 class ReportViewModel : ViewModel() {
 
-    private val repo = ObjectRepository()
+    private val repository = ObjectRepository()
+    private val storage = FirebaseStorage.getInstance()
 
     private val _state = MutableStateFlow<ReportState>(ReportState.Idle)
     val state: StateFlow<ReportState> = _state
@@ -22,38 +10,45 @@ class ReportViewModel : ViewModel() {
         objectId: String,
         objectName: String,
         faultType: String,
-        priority: Priority,
         createdBy: String,
+        priority: Priority,
         imageUri: Uri?,
-        comment: String? //  behåll detta namn för att matcha call-site
+        comment: String?
     ) {
         viewModelScope.launch {
+
             _state.value = ReportState.Loading
+
             try {
-                val report = IssueReport(
+
+                var downloadUrl: String? = null
+
+                if (imageUri != null) {
+                    val fileName = "reports/${UUID.randomUUID()}.jpg"
+                    val ref = storage.reference.child(fileName)
+
+                    ref.putFile(imageUri).await()
+                    downloadUrl = ref.downloadUrl.await().toString()
+                }
+
+                val newReport = IssueReport(
                     objectId = objectId,
                     objectName = objectName,
                     qrCode = objectId,
                     description = faultType,
                     status = "Ny",
-                    imageUrl = null,
-                    timestamp = Timestamp.now(),
-                    completedTimestamp = null,
+                    imageUrl = downloadUrl,
                     createdBy = createdBy,
                     priority = priority.name,
-                    floor = "",
-                    category = "",
-
-                    // nya fält
-                    userComment = comment,
-                    adminComment = null
+                    comment = comment
                 )
 
-                repo.addReport(report)
+                repository.addReport(newReport)
 
                 _state.value = ReportState.Success
+
             } catch (e: Exception) {
-                _state.value = ReportState.Error(e.message ?: "Kunde inte skicka rapport")
+                _state.value = ReportState.Error("Fel: ${e.message}")
             }
         }
     }
