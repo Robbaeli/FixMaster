@@ -1,15 +1,11 @@
 package com.ma25.fixmaster.ui
 
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -130,12 +126,27 @@ class ReportActivity : AppCompatActivity() {
                 .trim()
                 .takeIf { it.isNotBlank() }
 
+            // ✅ (اختياري) رسالة للمستخدم إذا Offline
+            val online = isOnline()
+            if (!online) {
+                Toast.makeText(
+                    this,
+                    "Du är offline. Ärendet sparas och synkas när du är online.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            // ✅ أهم شيء: إذا Offline لا تمرّر صورة (لأن Storage لا يعمل Offline)
+            val imageToSend = if (online) latestImageUri else null
+
             viewModel.submitReport(
                 objectId = objectId,
                 objectName = objectName,
                 faultType = faultType,
-                priority = priority,
                 createdBy = uid,
+                priority = priority,
+                imageUri = imageToSend,
+                comment = comment
                 imageUri = latestImageUri,
                 comment = userComment
             )
@@ -185,6 +196,14 @@ class ReportActivity : AppCompatActivity() {
 
         latestImageUri = uri
         takePictureLauncher.launch(uri)
+    }
+
+    // ✅ فقط لتحديد هل نمرّر صورة أم لا + رسالة
+    private fun isOnline(): Boolean {
+        val cm = getSystemService(ConnectivityManager::class.java)
+        val network = cm.activeNetwork ?: return false
+        val caps = cm.getNetworkCapabilities(network) ?: return false
+        return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     companion object {
