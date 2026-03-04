@@ -135,7 +135,9 @@ class ReportDetailActivity : AppCompatActivity() {
                     reportId = reportId,
                     newStatus = newStatus,
                     newPriority = newPriority,
-                    adminComment = adminComment
+                    adminComment = adminComment,
+
+
                 )
 
                 progressBar.visibility = View.GONE

@@ -37,28 +37,28 @@
         android:id="@+id/chipHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Akuta"
+        android:text="@string/akuta"
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chipFloor1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Våning 1"
+        android:text="@string/v_ning_1"
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chipIT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="IT"
+        android:text="@string/it"
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chipWater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vatten"
+        android:text="@string/vatten"
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
     </com.google.android.material.chip.ChipGroup>
 
@@ -75,7 +75,7 @@
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inga ärenden hittades"
+        android:text="@string/inga_renden_hittades"
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
@@ -95,7 +95,7 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:backgroundTint="@color/status_red"
-        android:text="Logga ut"
+        android:text="@string/logga_ut"
         android:textAllCaps="false" />
 
 </RelativeLayout>

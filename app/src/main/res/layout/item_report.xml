@@ -26,7 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Objekt"
+                android:text="@string/objekt"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
-                android:text="Ny"
+                android:text="@string/ny"
                 android:textColor="@android:color/white"
                 android:background="@android:color/holo_red_dark" />
         </LinearLayout>
@@ -45,7 +45,7 @@
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Plats"
+            android:text="@string/plats"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
 
@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="USER"
+                android:text="@string/user"
                 android:textStyle="bold"
                 android:textSize="11sp"
                 android:textColor="@android:color/darker_gray" />
@@ -70,7 +70,7 @@
                 android:id="@+id/tvUserCommentPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="User-kommentar…"
+                android:text="@string/user_kommentar"
                 android:textSize="13sp"
                 android:maxLines="3"
                 android:ellipsize="end" />
@@ -88,7 +88,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ADMIN"
+                android:text="@string/admin3"
                 android:textStyle="bold"
                 android:textSize="11sp"
                 android:textColor="@android:color/darker_gray" />
@@ -97,7 +97,7 @@
                 android:id="@+id/tvAdminCommentPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Admin-kommentar…"
+                android:text="@string/admin_kommentar"
                 android:textSize="13sp"
                 android:maxLines="3"
                 android:ellipsize="end" />
@@ -115,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="24 minuter sedan"
+                android:text="@string/_24_minuter_sedan"
                 android:textSize="12sp" />
 
             <TextView
@@ -126,7 +126,7 @@
                 android:paddingEnd="10dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:text="LOW"
+                android:text="@string/low"
                 android:textStyle="bold"
                 android:textColor="@android:color/white" />
         </LinearLayout>

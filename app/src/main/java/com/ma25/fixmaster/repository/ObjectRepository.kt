@@ -1,7 +1,6 @@
 package com.ma25.fixmaster.repository
 
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ma25.fixmaster.model.IssueReport
@@ -41,7 +40,7 @@ override suspend fun addReport(report: IssueReport) {
 
     val reportWithOwner = report.copy(
         createdBy = uid,
-        timestamp = report.timestamp ?: Timestamp.now()
+
     )
 
     // Offline friendly

@@ -17,7 +17,7 @@
             android:id="@+id/etEmailCreate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -35,7 +35,7 @@
             android:id="@+id/etPassCreate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,7 +43,7 @@
         android:id="@+id/btnCreate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Skapa konto"
+        android:text="@string/skapa_konto"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@id/tilPassCreate"
         app:layout_constraintStart_toStartOf="parent"

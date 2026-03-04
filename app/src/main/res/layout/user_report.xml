@@ -10,7 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mina ärenden"
+        android:text="@string/mina_renden"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inga ärenden än"
+        android:text="@string/inga_renden_n"
         android:layout_centerInParent="true"
         android:visibility="gone" />
 

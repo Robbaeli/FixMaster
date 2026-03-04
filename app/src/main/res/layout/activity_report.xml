@@ -18,7 +18,7 @@
             android:id="@+id/tvObjectTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Objektnamn"
+            android:text="@string/objektnamn"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/fm_text_primary" />
@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vad är felet?"
+            android:text="@string/vad_r_felet"
             android:textColor="@color/fm_text_secondary" />
 
         <RadioGroup
@@ -43,28 +43,28 @@
                 android:id="@+id/rbBroken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Trasig"
+                android:text="@string/trasig"
                 android:textColor="@color/fm_text_primary" />
 
             <RadioButton
                 android:id="@+id/rbLeak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Läckage"
+                android:text="@string/l_ckage"
                 android:textColor="@color/fm_text_primary" />
 
             <RadioButton
                 android:id="@+id/rbOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Annat"
+                android:text="@string/annat"
                 android:textColor="@color/fm_text_primary" />
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prioritet"
+            android:text="@string/prioritet"
             android:textColor="@color/fm_text_secondary"
             android:layout_marginTop="12dp" />
 
@@ -78,7 +78,7 @@
                 android:id="@+id/rbLow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Låg"
+                android:text="@string/l_g"
                 android:checked="true"
                 android:textColor="@color/fm_text_primary"/>
 
@@ -86,14 +86,14 @@
                 android:id="@+id/rbMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Medium"
+                android:text="@string/medium"
                 android:textColor="@color/fm_text_primary"/>
 
             <RadioButton
                 android:id="@+id/rbHigh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hög"
+                android:text="@string/h_g"
                 android:textColor="@color/fm_text_primary"/>
         </RadioGroup>
 
@@ -102,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Kommentar (valfritt)">
+            android:hint="@string/kommentar_valfritt">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etComment"
@@ -134,7 +134,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
-            android:text="Bifoga bild"
+            android:text="@string/bifoga_bild"
             android:textColor="@color/fm_text_primary"
             app:strokeColor="@color/fm_outline"
             app:icon="@android:drawable/ic_menu_camera"
@@ -144,7 +144,7 @@
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="SKICKA RAPPORT"
+            android:text="@string/skicka_rapport"
             app:cornerRadius="12dp" />
 
         <ProgressBar

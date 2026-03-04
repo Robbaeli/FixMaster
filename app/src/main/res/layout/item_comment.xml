@@ -10,7 +10,7 @@
         android:id="@+id/tvCommentRole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ADMIN"
+        android:text="@string/admin2"
         android:textStyle="bold"
         android:textSize="12sp"/>
 
@@ -18,6 +18,6 @@
         android:id="@+id/tvCommentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kommentar..."
+        android:text="@string/kommentar"
         android:layout_marginTop="4dp"/>
 </LinearLayout>

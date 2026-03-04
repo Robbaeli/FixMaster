@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fm_background"
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
         android:layout_marginTop="140dp"
-        android:text="FixMaster"
+        android:text="@string/fixmaster2"
         android:textColor="@color/fm_text_primary"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -46,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="12dp"
-            android:text="Skapa felanmälan"
+            android:text="@string/skapa_felanm_lan"
             android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton
@@ -54,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="12dp"
-            android:text="Mina felanmälningar"
+            android:text="@string/mina_felanm_lningar"
             android:textAllCaps="false" />
 
         <RelativeLayout
@@ -65,7 +64,7 @@
                 android:id="@+id/btnAdminView"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Admin"
+                android:text="@string/admin"
                 android:textAllCaps="false"
                 app:icon="@android:drawable/ic_lock_lock"
                 app:iconGravity="textStart"
@@ -90,7 +89,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:backgroundTint="@color/status_red"
-        android:text="Logga ut"
+        android:text="@string/logga_ut2"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +101,7 @@
         android:layout_height="56dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="@color/status_red"
-        android:text="Radera konto"
+        android:text="@string/radera_konto"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@id/btnLogout"
         app:layout_constraintStart_toStartOf="parent"

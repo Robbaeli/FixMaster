@@ -146,9 +146,8 @@ class ReportActivity : AppCompatActivity() {
                 createdBy = uid,
                 priority = priority,
                 imageUri = imageToSend,
-                comment = comment
-                imageUri = latestImageUri,
-                comment = userComment
+                comment = userComment,
+
             )
         }
     }

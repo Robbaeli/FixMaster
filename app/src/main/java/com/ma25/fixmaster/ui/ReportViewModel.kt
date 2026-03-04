@@ -1,6 +1,21 @@
+package com.ma25.fixmaster.ui
+
+import android.net.Uri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.storage.FirebaseStorage
+import com.ma25.fixmaster.model.IssueReport
+import com.ma25.fixmaster.model.Priority
+import com.ma25.fixmaster.repository.ObjectRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.util.UUID
+
 class ReportViewModel : ViewModel() {
 
-    private val repository = ObjectRepository()
+    private val repo = ObjectRepository()
     private val storage = FirebaseStorage.getInstance()
 
     private val _state = MutableStateFlow<ReportState>(ReportState.Idle)
@@ -40,10 +55,11 @@ class ReportViewModel : ViewModel() {
                     imageUrl = downloadUrl,
                     createdBy = createdBy,
                     priority = priority.name,
-                    comment = comment
+                    userComment = comment,
+                    adminComment = null
                 )
 
-                repository.addReport(newReport)
+                repo.addReport(newReport)
 
                 _state.value = ReportState.Success
 

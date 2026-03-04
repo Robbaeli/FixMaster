@@ -86,7 +86,7 @@
             android:id="@+id/test2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Finns ingen QR kod? Skriv manuellt"
+            android:text="@string/finns_ingen_qr_kod_skriv_manuellt"
             app:icon="@android:drawable/ic_menu_edit" />
 
 

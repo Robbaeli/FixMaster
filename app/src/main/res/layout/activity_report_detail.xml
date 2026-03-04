@@ -13,7 +13,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ärende"
+            android:text="@string/rende"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prioritet"
+            android:text="@string/prioritet2"
             android:layout_marginTop="16dp" />
 
         <Spinner
@@ -48,7 +48,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="User comment"
+            android:text="@string/user_comment"
             android:textStyle="bold"
             android:layout_marginTop="20dp" />
 
@@ -56,14 +56,14 @@
             android:id="@+id/tvUserComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-"
+            android:text="@string/symbol"
             android:layout_marginTop="6dp" />
 
         <!-- ADMIN COMMENT (current + edit) -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Admin comment"
+            android:text="@string/admin_comment"
             android:textStyle="bold"
             android:layout_marginTop="16dp" />
 
@@ -71,7 +71,7 @@
             android:id="@+id/tvAdminComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-"
+            android:text="@string/symbol2"
             android:layout_marginTop="6dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -83,7 +83,7 @@
                 android:id="@+id/etAdminComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Skriv admin-kommentar…"
+                android:hint="@string/skriv_admin_kommentar"
                 android:inputType="textMultiLine"
                 android:minLines="2" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,7 +92,7 @@
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Spara ändring"
+            android:text="@string/spara_ndring"
             android:layout_marginTop="16dp" />
 
         <ProgressBar
