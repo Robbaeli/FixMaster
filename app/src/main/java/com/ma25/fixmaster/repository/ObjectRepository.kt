@@ -1,7 +1,6 @@
 package com.ma25.fixmaster.repository
 
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ma25.fixmaster.model.IssueReport
@@ -12,8 +11,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class ObjectRepository : ReportRepository {
+
     private val db = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
 
     // ========================
     // OBJECTS: get by QR
@@ -25,28 +24,25 @@ class ObjectRepository : ReportRepository {
                 .get()
                 .await()
 
-            if (!snapshot.isEmpty) snapshot.documents[0].toObject(ReportObject::class.java) else null
+            if (!snapshot.isEmpty) {
+                snapshot.documents[0].toObject(ReportObject::class.java)
+            } else null
         } catch (e: Exception) {
             null
         }
     }
 
     // ========================
-    // CREATE REPORT (User)
-    // ✅ adds createdBy automatically
+    // CREATE REPORT (User) - OFFLINE FRIENDLY ✅
     // ========================
     override suspend fun addReport(report: IssueReport) {
-        val uid = auth.currentUser?.uid ?: return
-
-        val reportWithOwner = report.copy(
-            createdBy = uid,
-            // timestamp optional: if you want serverTimestamp in firestore set it in map instead
+        val reportToSave = report.copy(
+            // تأكد يوجد timestamp محلي حتى Offline
             timestamp = report.timestamp ?: Timestamp.now()
         )
 
-        db.collection("reports")
-            .add(reportWithOwner)
-            .await()
+        // IMPORTANT: لا await هنا، لكي لا يعلق Offline
+        db.collection("reports").add(reportToSave)
     }
 
     // ========================
@@ -62,8 +58,7 @@ class ObjectRepository : ReportRepository {
                 }
 
                 val reports = snapshot?.documents?.mapNotNull { doc ->
-                    doc.toObject(IssueReport::class.java)
-                        ?.copy(id = doc.id)
+                    doc.toObject(IssueReport::class.java)?.copy(id = doc.id)
                 } ?: emptyList()
 
                 trySend(reports)
@@ -94,8 +89,9 @@ class ObjectRepository : ReportRepository {
         awaitClose { listener.remove() }
     }
 
-    // Rapport av ID
-
+    // ========================
+    // Report by ID
+    // ========================
     suspend fun getReportById(reportId: String): IssueReport? {
         return try {
             val doc = db.collection("reports")
@@ -109,11 +105,10 @@ class ObjectRepository : ReportRepository {
         }
     }
 
-
     // ========================
     // ADMIN - update status
     // ========================
-    override suspend fun updateReportStatus(reportId: String, newStatus: String,) {
+    override suspend fun updateReportStatus(reportId: String, newStatus: String) {
         val updateData = mutableMapOf<String, Any>(
             "status" to newStatus
         )
