@@ -4,12 +4,12 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ma25.fixmaster.R
 import com.ma25.fixmaster.model.IssueReport
-
 
 class ReportAdapter(
     private var reports: List<IssueReport>,
@@ -22,21 +22,30 @@ class ReportAdapter(
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         val tvPriority: TextView = itemView.findViewById(R.id.tvPriority)
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+
+        // USER comment preview
+        val userCommentContainer: LinearLayout =
+            itemView.findViewById(R.id.userCommentPreviewContainer)
+        val tvUserCommentPreview: TextView =
+            itemView.findViewById(R.id.tvUserCommentPreview)
+
+        // ADMIN comment preview
+        val adminCommentContainer: LinearLayout =
+            itemView.findViewById(R.id.adminCommentPreviewContainer)
+        val tvAdminCommentPreview: TextView =
+            itemView.findViewById(R.id.tvAdminCommentPreview)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_report, parent, false)
         return ReportViewHolder(view)
-
     }
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = reports[position]
 
-        holder.itemView.setOnClickListener {
-            onItemClick(report)
-        }
+        holder.itemView.setOnClickListener { onItemClick(report) }
 
         holder.tvObjectName.text = report.objectName
         holder.tvLocation.text = report.objectId
@@ -45,25 +54,22 @@ class ReportAdapter(
         when (report.status) {
             "Ny" -> {
                 holder.tvStatus.setBackgroundResource(R.drawable.status_new)
-            holder.tvStatus.setTextColor(
-                ContextCompat.getColor(holder.itemView.context, R.color.status_red)
-            )
-        }
-
-        "Påbörjad"-> {
-            holder.tvStatus.setBackgroundColor(
-                ContextCompat.getColor(holder.itemView.context, R.color.status_yellow)
-            )
-            holder.tvStatus.setTextColor(Color.BLACK)
-        }
-
-            "Klar"-> {
+                holder.tvStatus.setTextColor(
+                    ContextCompat.getColor(holder.itemView.context, R.color.status_red)
+                )
+            }
+            "Påbörjad" -> {
+                holder.tvStatus.setBackgroundColor(
+                    ContextCompat.getColor(holder.itemView.context, R.color.status_yellow)
+                )
+                holder.tvStatus.setTextColor(Color.BLACK)
+            }
+            "Klar" -> {
                 holder.tvStatus.setBackgroundColor(
                     ContextCompat.getColor(holder.itemView.context, R.color.status_green)
                 )
                 holder.tvStatus.setTextColor(Color.WHITE)
             }
-
         }
 
         holder.tvPriority.text = report.priority
@@ -72,34 +78,43 @@ class ReportAdapter(
             "HIGH" -> {
                 holder.tvPriority.setBackgroundResource(R.drawable.priority_high)
                 holder.tvPriority.setTextColor(Color.WHITE)
-
             }
             "MEDIUM" -> {
                 holder.tvPriority.setBackgroundResource(R.drawable.priority_medium)
                 holder.tvPriority.setTextColor(Color.BLACK)
             }
-            else -> { //LOW
+            else -> { // LOW
                 holder.tvPriority.setBackgroundResource(R.drawable.priority_low)
                 holder.tvPriority.setTextColor(Color.BLACK)
             }
-
         }
 
-        val timeMillis = report.timestamp?.toDate()?.time
+        val timeMillis = report.timestamp.toDate().time
+        holder.tvTime.text = getTimeAgo(timeMillis)
 
-        if (timeMillis != null) {
-            holder.tvTime.text =getTimeAgo(timeMillis)
+        // Visa BÅDA kommentarer om de finns
+        val userComment = report.userComment?.trim().orEmpty()
+        if (userComment.isNotBlank()) {
+            holder.userCommentContainer.visibility = View.VISIBLE
+            holder.tvUserCommentPreview.text = userComment
         } else {
-            holder.tvTime.text=""
+            holder.userCommentContainer.visibility = View.GONE
+        }
+
+        val adminComment = report.adminComment?.trim().orEmpty()
+        if (adminComment.isNotBlank()) {
+            holder.adminCommentContainer.visibility = View.VISIBLE
+            holder.tvAdminCommentPreview.text = adminComment
+        } else {
+            holder.adminCommentContainer.visibility = View.GONE
         }
     }
 
     private fun getTimeAgo(timestamp: Long): String {
-        val diff =System.currentTimeMillis() - timestamp
-
+        val diff = System.currentTimeMillis() - timestamp
         val minutes = diff / (1000 * 60)
         val hours = diff / (1000 * 60 * 60)
-        val days = diff / (1000 * 60 * 60 *24)
+        val days = diff / (1000 * 60 * 60 * 24)
 
         return when {
             minutes < 1 -> "Just nu"
@@ -107,7 +122,6 @@ class ReportAdapter(
             hours < 24 -> "$hours h sedan"
             else -> "$days dagar sedan"
         }
-
     }
 
     override fun getItemCount(): Int = reports.size

@@ -23,7 +23,9 @@
             android:textStyle="bold"
             android:textColor="@color/fm_text_primary" />
 
-        <View android:layout_width="match_parent" android:layout_height="32dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,13 +61,12 @@
                 android:textColor="@color/fm_text_primary" />
         </RadioGroup>
 
-        <!-- Micke lägger till Prioritet Sektion -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Prioritet"
-            android:textColor="@color/fm_text_secondary"/>
+            android:textColor="@color/fm_text_secondary"
+            android:layout_marginTop="12dp" />
 
         <RadioGroup
             android:id="@+id/rgPriority"
@@ -81,27 +82,46 @@
                 android:checked="true"
                 android:textColor="@color/fm_text_primary"/>
 
-        <RadioButton
-            android:id="@+id/rbMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medium"
-            android:textColor="@color/fm_text_primary"/>
+            <RadioButton
+                android:id="@+id/rbMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medium"
+                android:textColor="@color/fm_text_primary"/>
 
-        <RadioButton
-            android:id="@+id/rbHigh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hög"
-            android:textColor="@color/fm_text_primary"/>
+            <RadioButton
+                android:id="@+id/rbHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hög"
+                android:textColor="@color/fm_text_primary"/>
         </RadioGroup>
 
-        <View android:layout_width="match_parent" android:layout_height="40dp" />
+        <!-- ✅ Kommentar -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Kommentar (valfritt)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="2"
+                android:maxLines="4"
+                android:inputType="textMultiLine"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
         <ImageView
             android:id="@+id/ivPreview"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_gallery"
             android:visibility="gone"
