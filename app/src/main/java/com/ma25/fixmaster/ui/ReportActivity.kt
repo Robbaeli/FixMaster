@@ -32,7 +32,7 @@ class ReportActivity : AppCompatActivity() {
 
     private lateinit var tvTitle: TextView
     private lateinit var rgFaultType: RadioGroup
-    private lateinit var rgPriority: RadioGroup // <--- NYTT: RadioGroup för prioritering
+    private lateinit var rgPriority: RadioGroup
     private lateinit var btnSubmit: Button
     private lateinit var progress: ProgressBar
 
@@ -87,11 +87,12 @@ class ReportActivity : AppCompatActivity() {
     private fun bindViews() {
         tvTitle = findViewById(R.id.tvObjectTitle)
         rgFaultType = findViewById(R.id.rgFaultType)
+        rgPriority = findViewById(R.id.rgPriority)
         btnSubmit = findViewById(R.id.btnSubmit)
         progress = findViewById(R.id.progress)
         ivPreview = findViewById(R.id.ivPreview)
         btnAttachImage = findViewById(R.id.btnAttachImage)
-        rgPriority = findViewById(R.id.rgPriority) // <--- NYTT: RadioGroup för prioritering
+        etComment = findViewById(R.id.etComment)
     }
 
     private fun renderHeader() {
@@ -103,7 +104,6 @@ class ReportActivity : AppCompatActivity() {
 
         btnSubmit.setOnClickListener {
             val selectedId = rgFaultType.checkedRadioButtonId
-            //Prioritet som Micke har lagt till
             val selectedPriorityId = rgPriority.checkedRadioButtonId
 
             val priority = when (selectedPriorityId) {
@@ -112,8 +112,6 @@ class ReportActivity : AppCompatActivity() {
                 R.id.rbLow -> Priority.LOW
                 else -> Priority.LOW
             }
-
-
 
             if (selectedId == -1) {
                 Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
@@ -127,19 +125,19 @@ class ReportActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val comment = etComment.text?.toString()
+            val userComment = etComment.text?.toString()
                 .orEmpty()
                 .trim()
-                .takeIf { it.isNotBlank() } // null om tom
+                .takeIf { it.isNotBlank() }
 
             viewModel.submitReport(
                 objectId = objectId,
                 objectName = objectName,
                 faultType = faultType,
-                priority = priority, //Micke la till priority
+                priority = priority,
                 createdBy = uid,
                 imageUri = latestImageUri,
-                comment = comment
+                comment = userComment
             )
         }
     }
