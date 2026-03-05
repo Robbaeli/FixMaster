@@ -1,159 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:fillViewport="true"
     android:background="@color/fm_background">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="24dp">
 
-        <TextView
-            android:id="@+id/tvObjectTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/objektnamn"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/fm_text_primary" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/vad_r_felet"
-            android:textColor="@color/fm_text_secondary" />
-
-        <RadioGroup
-            android:id="@+id/rgFaultType"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <RadioButton
-                android:id="@+id/rbBroken"
+            <TextView
+                android:id="@+id/tvObjectTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/trasig"
+                android:text="@string/objektnamn"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 android:textColor="@color/fm_text_primary" />
 
-            <RadioButton
-                android:id="@+id/rbLeak"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/l_ckage"
-                android:textColor="@color/fm_text_primary" />
+                android:text="@string/vad_r_felet"
+                android:textColor="@color/fm_text_secondary" />
 
-            <RadioButton
-                android:id="@+id/rbOther"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/annat"
-                android:textColor="@color/fm_text_primary" />
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/prioritet"
-            android:textColor="@color/fm_text_secondary"
-            android:layout_marginTop="12dp" />
-
-        <RadioGroup
-            android:id="@+id/rgPriority"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <RadioButton
-                android:id="@+id/rbLow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/l_g"
-                android:checked="true"
-                android:textColor="@color/fm_text_primary"/>
-
-            <RadioButton
-                android:id="@+id/rbMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/medium"
-                android:textColor="@color/fm_text_primary"/>
-
-            <RadioButton
-                android:id="@+id/rbHigh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/h_g"
-                android:textColor="@color/fm_text_primary"/>
-        </RadioGroup>
-
-        <!-- ✅ Kommentar -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/kommentar_valfritt">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etComment"
+            <RadioGroup
+                android:id="@+id/rgFaultType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="2"
-                android:maxLines="4"
-                android:inputType="textMultiLine"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
+                <RadioButton
+                    android:id="@+id/rbBroken"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trasig"
+                    android:textColor="@color/fm_text_primary" />
 
-        <ImageView
-            android:id="@+id/ivPreview"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:visibility="gone"
-            android:background="@color/fm_surface" />
+                <RadioButton
+                    android:id="@+id/rbLeak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/l_ckage"
+                    android:textColor="@color/fm_text_primary" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAttachImage"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            android:text="@string/bifoga_bild"
-            android:textColor="@color/fm_text_primary"
-            app:strokeColor="@color/fm_outline"
-            app:icon="@android:drawable/ic_menu_camera"
-            app:iconTint="@color/fm_primary" />
+                <RadioButton
+                    android:id="@+id/rbOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/annat"
+                    android:textColor="@color/fm_text_primary" />
+            </RadioGroup>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="@string/skicka_rapport"
-            app:cornerRadius="12dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prioritet"
+                android:textColor="@color/fm_text_secondary"
+                android:layout_marginTop="12dp" />
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone" />
+            <RadioGroup
+                android:id="@+id/rgPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
 
-    </LinearLayout>
+                <RadioButton
+                    android:id="@+id/rbLow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/l_g"
+                    android:checked="true"
+                    android:textColor="@color/fm_text_primary"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <RadioButton
+                    android:id="@+id/rbMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/medium"
+                    android:textColor="@color/fm_text_primary"/>
+
+                <RadioButton
+                    android:id="@+id/rbHigh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h_g"
+                    android:textColor="@color/fm_text_primary"/>
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/kommentar_valfritt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minLines="2"
+                    android:maxLines="4"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <ImageView
+                android:id="@+id/ivPreview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:visibility="gone"
+                android:background="@color/fm_surface" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAttachImage"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/bifoga_bild"
+                android:textColor="@color/fm_text_primary"
+                app:strokeColor="@color/fm_outline"
+                app:icon="@android:drawable/ic_menu_camera"
+                app:iconTint="@color/fm_primary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/skicka_rapport"
+                app:cornerRadius="12dp" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
