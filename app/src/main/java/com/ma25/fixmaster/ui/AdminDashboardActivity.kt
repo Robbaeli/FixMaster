@@ -67,14 +67,12 @@ class AdminDashboardActivity : AppCompatActivity() {
                 R.id.chipHigh ->
                     viewModel.setFilter(AdminFilter.HIGH_PRIORITY)
 
-                R.id.chipFloor1 ->
-                    viewModel.setFilter(AdminFilter.FLOOR_1)
+                R.id.chipMedium ->
+                    viewModel.setFilter(AdminFilter.MEDIUM_PRIORITY)
 
-                R.id.chipIT ->
-                    viewModel.setFilter(AdminFilter.IT)
+                R.id.chipLow ->
+                    viewModel.setFilter(AdminFilter.LOW_PRIORITY)
 
-                R.id.chipWater ->
-                    viewModel.setFilter(AdminFilter.WATER)
             }
         }
 

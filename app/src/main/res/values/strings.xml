@@ -67,7 +67,7 @@
     <string name="logga_ut2">Logga ut</string>
     <string name="radera_konto">Radera konto</string>
     <string name="admin2">ADMIN</string>
-    <string name="kommentar">Kommentar...</string>
+    <string name="kommentar">Kommentar…</string>
     <string name="objekt">Objekt</string>
     <string name="ny">Ny</string>
     <string name="plats">Plats</string>
@@ -79,4 +79,6 @@
     <string name="low">LOW</string>
     <string name="mina_renden">Mina ärenden</string>
     <string name="inga_renden_n">Inga ärenden än</string>
+    <string name="alla">Alla</string>
+    <string name="admin_dashboard">Admin Dashboard</string>
 </resources>

@@ -11,7 +11,7 @@
         android:id="@+id/adminTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin Dashboard"
+        android:text="@string/admin_dashboard"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
@@ -30,7 +30,7 @@
             android:id="@+id/chipAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alla"
+            android:text="@string/alla"
             style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
     <com.google.android.material.chip.Chip
@@ -41,25 +41,19 @@
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/chipFloor1"
+        android:id="@+id/chipMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/v_ning_1"
+        android:text="@string/medium"
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/chipIT"
+        android:id="@+id/chipLow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/it"
+        android:text="@string/l_g"
         style="@style/Widget.MaterialComponents.Chip.Filter"/>
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chipWater"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/vatten"
-        style="@style/Widget.MaterialComponents.Chip.Filter"/>
     </com.google.android.material.chip.ChipGroup>
 
 

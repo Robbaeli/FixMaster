@@ -50,14 +50,12 @@ class AdminViewModel : ViewModel() {
                             AdminFilter.HIGH_PRIORITY ->
                                 reports.filter { it.priority == "HIGH" }
 
-                            AdminFilter.FLOOR_1 ->
-                                reports.filter { it.floor == "1" }
+                            AdminFilter.MEDIUM_PRIORITY ->
+                                reports.filter { it.priority == "MEDIUM" }
 
-                            AdminFilter.IT ->
-                                reports.filter { it.category == "IT" }
+                            AdminFilter.LOW_PRIORITY ->
+                                reports.filter { it.priority == "LOW" }
 
-                            AdminFilter.WATER ->
-                                reports.filter { it.category == "WATER" }
                         }
                         filtered.sortedWith(compareByDescending<com.ma25.fixmaster.model.IssueReport>{
                             priorityOrder(it.priority)
