@@ -1,3 +1,86 @@
 <resources>
     <string name="app_name">FixMaster</string>
+    <string name="subtitle_scan">Skanna en QR-kod för att skapa en felanmälan</string>
+    <string name="scan_label">Skanna QR</string>
+    <string name="btn_dummy_report">Finns ingen QR kod? skriv in manuellt här</string>
+    <string name="cd_scan_qr">Skanna QR-kod</string>
+    <string name="tillbaka">Tillbaka</string>
+
+
+    <string name="report_object_prefix">Objekt: %1$s</string>
+
+    <string name="report_choose_fault">Välj en feltyp</string>
+    <string name="report_sent_thanks">Tack! Ärendet är skickat.</string>
+
+    <string name="report_send">Skicka</string>
+    <string name="report_sending">Skickar…</string>
+
+    <string name="fault_broken">Trasig</string>
+    <string name="fault_leak">Läckage</string>
+    <string name="fault_other">Annat</string>
+    <string name="Default">Admin Dashboard</string>
+    <string name="text">Alla</string>
+    <string name="akuta">Akuta</string>
+    <string name="v_ning_1">Våning 1</string>
+    <string name="it">IT</string>
+    <string name="vatten">Vatten</string>
+    <string name="inga_renden_hittades">Inga ärenden hittades</string>
+    <string name="logga_ut">Logga ut</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="skapa_konto">Skapa konto</string>
+    <string name="fixmaster">FixMaster</string>
+    <string name="skanna_rapportera_fixat">Skanna. Rapportera. Fixat.</string>
+    <string name="logga_in">Logga in</string>
+    <string name="email2">Email</string>
+    <string name="password2">Password</string>
+    <string name="gl_mt_l_senord">Glömt lösenord ?</string>
+    <string name="logga_in2">Logga in</string>
+    <string name="finns_ingen_qr_kod_skriv_manuellt">Finns ingen QR kod? Skriv manuellt</string>
+    <string name="placera_qr_koden_i_rutan">Placera QR-koden i rutan</string>
+    <string name="objektnamn">Objektnamn</string>
+    <string name="vad_r_felet">Vad är felet?</string>
+    <string name="trasig">Trasig</string>
+    <string name="l_ckage">Läckage</string>
+    <string name="annat">Annat</string>
+    <string name="prioritet">Prioritet</string>
+    <string name="l_g">Låg</string>
+    <string name="medium">Medium</string>
+    <string name="h_g">Hög</string>
+    <string name="kommentar_valfritt">Kommentar (valfritt)</string>
+    <string name="bifoga_bild">Bifoga bild</string>
+    <string name="skicka_rapport">SKICKA RAPPORT</string>
+    <string name="rende">Ärende</string>
+    <string name="prioritet2">Prioritet</string>
+    <string name="user_comment">User comment</string>
+    <string name="symbol">-</string>
+    <string name="admin_comment">Admin comment</string>
+    <string name="symbol2">-</string>
+    <string name="skriv_admin_kommentar">Skriv admin-kommentar…</string>
+    <string name="spara_ndring">Spara ändring</string>
+    <string name="tack">Tack för din anmälan!</string>
+    <string name="vi_har_tagit_emot_ditt_rende">Vi har tagit emot ditt ärende.</string>
+    <string name="email3">Email</string>
+    <string name="skicka_terst_llningsl_nk">Skicka återställningslänk</string>
+    <string name="fixmaster2">FixMaster</string>
+    <string name="skapa_felanm_lan">Skapa felanmälan</string>
+    <string name="mina_felanm_lningar">Mina felanmälningar</string>
+    <string name="admin">Admin</string>
+    <string name="logga_ut2">Logga ut</string>
+    <string name="radera_konto">Radera konto</string>
+    <string name="admin2">ADMIN</string>
+    <string name="kommentar">Kommentar…</string>
+    <string name="objekt">Objekt</string>
+    <string name="ny">Ny</string>
+    <string name="plats">Plats</string>
+    <string name="user">USER</string>
+    <string name="user_kommentar">User-kommentar…</string>
+    <string name="admin3">ADMIN</string>
+    <string name="admin_kommentar">Admin-kommentar…</string>
+    <string name="_24_minuter_sedan">24 minuter sedan</string>
+    <string name="low">LOW</string>
+    <string name="mina_renden">Mina ärenden</string>
+    <string name="inga_renden_n">Inga ärenden än</string>
+    <string name="alla">Alla</string>
+    <string name="admin_dashboard">Admin Dashboard</string>
 </resources>
