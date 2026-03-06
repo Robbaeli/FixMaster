@@ -11,13 +11,12 @@
         android:id="@+id/adminTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:text="@string/admin_dashboard"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold" />
 
-    <!-- Chip variant -->
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupFilters"
         android:layout_width="match_parent"
@@ -28,35 +27,33 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipAll"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/alla"
-            style="@style/Widget.MaterialComponents.Chip.Filter"/>
+            android:text="@string/alla" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chipHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/akuta"
-        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipHigh"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/akuta" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chipMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/medium"
-        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMedium"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medium" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chipLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/l_g"
-        style="@style/Widget.MaterialComponents.Chip.Filter"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipLow"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_g" />
 
     </com.google.android.material.chip.ChipGroup>
-
-
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -69,11 +66,10 @@
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/inga_renden_hittades"
         android:layout_centerInParent="true"
+        android:text="@string/inga_renden_hittades"
         android:visibility="gone" />
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewReports"
         android:layout_width="match_parent"
@@ -82,14 +78,14 @@
         android:layout_marginTop="16dp"
         tools:listitem="@android:layout/simple_list_item_2" />
 
-    <!-- Logout Button -->
+    <!-- ✅ Tillbaka Button (was Logga ut) -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogoutAdmin"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/status_red"
-        android:text="@string/logga_ut"
+        android:backgroundTint="@color/fm_primary"
+        android:text="@string/tillbaka"
         android:textAllCaps="false" />
 
 </RelativeLayout>

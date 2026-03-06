@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,11 +11,11 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:text="@string/mina_renden"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -27,16 +28,28 @@
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/inga_renden_n"
         android:layout_centerInParent="true"
+        android:text="@string/inga_renden_n"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewReports"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/btnBack"
         android:layout_below="@id/tvTitle"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         tools:listitem="@layout/item_report" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/tillbaka"
+        android:textAllCaps="false"
+        android:textColor="@color/fm_on_primary"
+        app:backgroundTint="@color/fm_primary" />
 
 </RelativeLayout>

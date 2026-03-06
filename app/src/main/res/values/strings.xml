@@ -4,6 +4,8 @@
     <string name="scan_label">Skanna QR</string>
     <string name="btn_dummy_report">Finns ingen QR kod? skriv in manuellt här</string>
     <string name="cd_scan_qr">Skanna QR-kod</string>
+    <string name="tillbaka">Tillbaka</string>
+
 
     <string name="report_object_prefix">Objekt: %1$s</string>
 

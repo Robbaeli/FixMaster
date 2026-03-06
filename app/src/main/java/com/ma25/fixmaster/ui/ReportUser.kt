@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.ma25.fixmaster.R
 import com.ma25.fixmaster.repository.ObjectRepository
@@ -22,6 +23,7 @@ class ReportUser : AppCompatActivity() {
     private lateinit var progress: ProgressBar
     private lateinit var empty: TextView
     private lateinit var adapter: ReportAdapter
+    private lateinit var btnBack: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,12 @@ class ReportUser : AppCompatActivity() {
         recycler = findViewById(R.id.recyclerViewReports)
         progress = findViewById(R.id.progressBar)
         empty = findViewById(R.id.tvEmptyState)
+        btnBack = findViewById(R.id.btnBack)
+
+        // ✅ Tillbaka
+        btnBack.setOnClickListener {
+            finish() // يرجع للشاشة السابقة (UserDashboard)
+        }
 
         recycler.layoutManager = LinearLayoutManager(this)
         adapter = ReportAdapter(emptyList()) { /* click optional */ }
@@ -37,12 +45,12 @@ class ReportUser : AppCompatActivity() {
 
         val uid = auth.currentUser?.uid
         if (uid == null) {
+            progress.visibility = View.GONE
+            recycler.visibility = View.GONE
             empty.visibility = View.VISIBLE
             empty.text = "Du är inte inloggad"
             return
         }
-
-
 
         progress.visibility = View.VISIBLE
         empty.visibility = View.GONE
@@ -50,8 +58,6 @@ class ReportUser : AppCompatActivity() {
 
         lifecycleScope.launch {
             repo.observeMyReports(uid).collect { myReports ->
-
-
                 progress.visibility = View.GONE
 
                 if (myReports.isEmpty()) {

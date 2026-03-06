@@ -24,12 +24,14 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.button.MaterialButton
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.ma25.fixmaster.R
+import com.ma25.fixmaster.UserDashboardActivity
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -46,6 +48,15 @@ class QrScannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_scanner)
+
+        // ✅ Tillbaka button
+        findViewById<MaterialButton>(R.id.btnBack).setOnClickListener {
+            // يرجع لصفحة UserDashboard مباشرة
+            val i = Intent(this, UserDashboardActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(i)
+            finish()
+        }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
         barcodeScanner = BarcodeScanning.getClient(
@@ -74,18 +85,14 @@ class QrScannerActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
+
                     is QrState.Error -> {
-                        // Visar felmeddelandet (t.ex. "Objektet hittades inte")
                         Toast.makeText(this@QrScannerActivity, state.message, Toast.LENGTH_LONG).show()
-                        // Återställ spärren så användaren kan försöka scanna igen
                         isProcessing = false
                     }
-                    is QrState.Loading -> {
-                        // Här kan du lägga till en ProgressBar om det tar tid att hämta från Firebase
-                    }
-                    is QrState.Idle -> {
-                        // Vänteläge, ingen åtgärd behövs
-                    }
+
+                    is QrState.Loading -> Unit
+                    is QrState.Idle -> Unit
                 }
             }
         }
@@ -129,7 +136,11 @@ class QrScannerActivity : AppCompatActivity() {
             return
         }
 
-        val mediaImage = imageProxy.image ?: return
+        val mediaImage = imageProxy.image ?: run {
+            imageProxy.close()
+            return
+        }
+
         val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
 
         barcodeScanner.process(image)
@@ -137,8 +148,8 @@ class QrScannerActivity : AppCompatActivity() {
                 if (barcodes.isNotEmpty() && !isProcessing) {
                     val barcode = barcodes[0]
                     barcode.rawValue?.let { code ->
-                        isProcessing = true // Spärra för att undvika dubbla anrop
-                        Log.d("QrScanner", "Scannad kod: $code") // Bra för felsökning i Logcat
+                        isProcessing = true
+                        Log.d("QrScanner", "Scannad kod: $code")
                         viewModel.onQrScanned(code)
                     }
                 }
