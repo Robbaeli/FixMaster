@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater

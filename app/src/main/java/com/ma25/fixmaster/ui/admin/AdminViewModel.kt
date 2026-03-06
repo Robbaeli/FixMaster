@@ -1,10 +1,9 @@
-package com.ma25.fixmaster.ui
-
-
+package com.ma25.fixmaster.ui.admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ma25.fixmaster.model.AdminFilter
+import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.repository.ObjectRepository
 import com.ma25.fixmaster.repository.ReportRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +58,7 @@ class AdminViewModel : ViewModel() {
                             AdminFilter.WATER ->
                                 reports.filter { it.category == "WATER" }
                         }
-                        filtered.sortedWith(compareByDescending<com.ma25.fixmaster.model.IssueReport>{
+                        filtered.sortedWith(compareByDescending<IssueReport>{
                             priorityOrder(it.priority)
                         }.thenByDescending {
                             it.timestamp.toDate().time

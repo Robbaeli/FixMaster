@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.ma25.fixmaster.model.IssueReport
 import com.ma25.fixmaster.model.Priority
 import com.ma25.fixmaster.repository.ObjectRepository
+import com.ma25.fixmaster.ui.report.state.ReportState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

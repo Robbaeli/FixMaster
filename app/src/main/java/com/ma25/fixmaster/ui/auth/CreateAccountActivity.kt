@@ -1,4 +1,4 @@
-package com.ma25.fixmaster
+package com.ma25.fixmaster.ui.auth
 
 import android.os.Bundle
 import android.widget.Toast
@@ -7,6 +7,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.ma25.fixmaster.R
 
 class CreateAccountActivity : AppCompatActivity() {
 

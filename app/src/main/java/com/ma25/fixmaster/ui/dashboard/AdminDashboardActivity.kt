@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,10 +12,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.FirebaseAuth
-import com.ma25.fixmaster.LoginActivity
+import com.ma25.fixmaster.ui.auth.LoginActivity
 import com.ma25.fixmaster.R
 import com.ma25.fixmaster.model.AdminFilter
+import com.ma25.fixmaster.ui.report.adapter.ReportAdapter
+import com.ma25.fixmaster.ui.report.ReportDetailActivity
+import com.ma25.fixmaster.ui.admin.AdminState
+import com.ma25.fixmaster.ui.admin.AdminViewModel
 import kotlinx.coroutines.launch
 
 class AdminDashboardActivity : AppCompatActivity() {
@@ -54,7 +59,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         viewModel = AdminViewModel()
 
-        val chipGroup = findViewById<com.google.android.material.chip.ChipGroup>(
+        val chipGroup = findViewById<ChipGroup>(
             R.id.chipGroupFilters
         )
 

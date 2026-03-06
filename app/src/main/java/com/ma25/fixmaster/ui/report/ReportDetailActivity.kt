@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report
 
 import android.os.Bundle
 import android.view.View

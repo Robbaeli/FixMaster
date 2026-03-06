@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.ma25.fixmaster.R
-import com.ma25.fixmaster.UserDashboardActivity
+import com.ma25.fixmaster.ui.dashboard.UserDashboardActivity
 
 class ReportSuccessActivity : AppCompatActivity() {
 

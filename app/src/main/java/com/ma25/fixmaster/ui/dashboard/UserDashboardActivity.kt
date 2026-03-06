@@ -1,4 +1,4 @@
-package com.ma25.fixmaster
+package com.ma25.fixmaster.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore // <-- Ny import
-import com.ma25.fixmaster.ui.ReportUser
-import com.ma25.fixmaster.ui.AdminDashboardActivity
+import com.google.firebase.firestore.FirebaseFirestore
+import com.ma25.fixmaster.ui.auth.LoginActivity
+import com.ma25.fixmaster.ui.main.MainActivity
+import com.ma25.fixmaster.R
+import com.ma25.fixmaster.model.ReportUser
 
 class UserDashboardActivity : AppCompatActivity() {
 

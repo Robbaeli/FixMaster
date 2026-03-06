@@ -1,15 +1,24 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.ma25.fixmaster.R
 import com.ma25.fixmaster.model.Priority
+import com.ma25.fixmaster.ui.report.state.ReportState
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -39,7 +49,7 @@ class ReportActivity : AppCompatActivity() {
     private lateinit var btnAttachImage: MaterialButton
     private var latestImageUri: Uri? = null
 
-    private lateinit var etComment: TextInputEditText //För att lägga kommentar
+    private lateinit var etComment: TextInputEditText
 
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -99,8 +109,13 @@ class ReportActivity : AppCompatActivity() {
         btnAttachImage.setOnClickListener { checkCameraPermissionAndStart() }
 
         btnSubmit.setOnClickListener {
-            val selectedId = rgFaultType.checkedRadioButtonId
+            val selectedFaultId = rgFaultType.checkedRadioButtonId
             val selectedPriorityId = rgPriority.checkedRadioButtonId
+
+            if (selectedFaultId == -1) {
+                Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val priority = when (selectedPriorityId) {
                 R.id.rbHigh -> Priority.HIGH
@@ -109,24 +124,20 @@ class ReportActivity : AppCompatActivity() {
                 else -> Priority.LOW
             }
 
-            if (selectedId == -1) {
-                Toast.makeText(this, "Välj typ av fel", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            val faultType = findViewById<RadioButton>(selectedFaultId).text.toString()
 
-            val faultType = findViewById<RadioButton>(selectedId).text.toString()
             val uid = FirebaseAuth.getInstance().currentUser?.uid
             if (uid == null) {
                 Toast.makeText(this, "Du är inte inloggad", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val userComment = etComment.text?.toString()
+            val userComment = etComment.text
+                ?.toString()
                 .orEmpty()
                 .trim()
                 .takeIf { it.isNotBlank() }
 
-            // ✅ (اختياري) رسالة للمستخدم إذا Offline
             val online = isOnline()
             if (!online) {
                 Toast.makeText(
@@ -136,7 +147,7 @@ class ReportActivity : AppCompatActivity() {
                 ).show()
             }
 
-            // ✅ أهم شيء: إذا Offline لا تمرّر صورة (لأن Storage لا يعمل Offline)
+            // Om offline: skicka inte bild (Firebase Storage funkar inte offline)
             val imageToSend = if (online) latestImageUri else null
 
             viewModel.submitReport(
@@ -146,8 +157,7 @@ class ReportActivity : AppCompatActivity() {
                 createdBy = uid,
                 priority = priority,
                 imageUri = imageToSend,
-                comment = userComment,
-
+                comment = userComment
             )
         }
     }
@@ -161,12 +171,20 @@ class ReportActivity : AppCompatActivity() {
 
                     when (state) {
                         is ReportState.Success -> {
-                            startActivity(Intent(this@ReportActivity, ReportSuccessActivity::class.java))
+                            startActivity(
+                                Intent(this@ReportActivity, ReportSuccessActivity::class.java)
+                            )
                             finish()
                         }
+
                         is ReportState.Error -> {
-                            Toast.makeText(this@ReportActivity, state.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@ReportActivity,
+                                state.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
+
                         else -> Unit
                     }
                 }
@@ -177,17 +195,17 @@ class ReportActivity : AppCompatActivity() {
     private fun checkCameraPermissionAndStart() {
         val granted = ContextCompat.checkSelfPermission(
             this,
-            android.Manifest.permission.CAMERA
-        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
 
         if (granted) startCameraWrapper()
-        else requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
 
     private fun startCameraWrapper() {
         val photoFile = File(externalCacheDirs.first(), "temp_photo_${System.currentTimeMillis()}.jpg")
 
-        val uri = androidx.core.content.FileProvider.getUriForFile(
+        val uri = FileProvider.getUriForFile(
             this,
             "com.ma25.fixmaster.fileprovider",
             photoFile
@@ -197,7 +215,6 @@ class ReportActivity : AppCompatActivity() {
         takePictureLauncher.launch(uri)
     }
 
-    // ✅ فقط لتحديد هل نمرّر صورة أم لا + رسالة
     private fun isOnline(): Boolean {
         val cm = getSystemService(ConnectivityManager::class.java)
         val network = cm.activeNetwork ?: return false

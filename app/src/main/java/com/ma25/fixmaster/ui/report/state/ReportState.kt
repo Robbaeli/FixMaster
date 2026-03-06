@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report.state
 
 sealed class ReportState {
     object Idle : ReportState()

@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.qr
 
 import com.ma25.fixmaster.model.ReportObject
 

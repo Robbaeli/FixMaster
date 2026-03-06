@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+   >
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -16,42 +16,50 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FixMaster">
+
         <activity
-            android:name=".ui.ReportDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.AdminDashboardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.QrScannerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.ReportActivity"
+            android:name=".ui.auth.CreateAccountActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name=".ui.auth.ResetPasswordActivity"
             android:exported="false" />
+
         <activity
-            android:name=".UserDashboardActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ui.ReportUser"
+            android:name=".ui.dashboard.AdminDashboardActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ui.ReportSuccessActivity"
+            android:name=".ui.dashboard.UserDashboardActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.qr.QrScannerActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.report.ReportActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.report.ReportDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.report.ReportSuccessActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
@@ -64,6 +72,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>

@@ -1,8 +1,9 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.report
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ma25.fixmaster.repository.ReportRepository
+import com.ma25.fixmaster.ui.report.state.DetailState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

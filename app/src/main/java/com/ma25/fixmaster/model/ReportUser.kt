@@ -1,4 +1,4 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.model
 
 import android.os.Bundle
 import android.view.View
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.ma25.fixmaster.R
 import com.ma25.fixmaster.repository.ObjectRepository
+import com.ma25.fixmaster.ui.report.adapter.ReportAdapter
 import kotlinx.coroutines.launch
 
 class ReportUser : AppCompatActivity() {

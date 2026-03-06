@@ -1,7 +1,7 @@
-package com.ma25.fixmaster.ui
+package com.ma25.fixmaster.ui.qr
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope // Nu bör denna bli lila/grön istället för röd
+import androidx.lifecycle.viewModelScope
 import com.ma25.fixmaster.repository.ObjectRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

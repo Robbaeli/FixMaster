@@ -1,4 +1,4 @@
-package com.ma25.fixmaster
+package com.ma25.fixmaster.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.ma25.fixmaster.ui.AdminDashboardActivity
-import com.ma25.fixmaster.ui.QrScannerActivity
-import com.ma25.fixmaster.ui.ReportActivity
+import com.ma25.fixmaster.R
+import com.ma25.fixmaster.ui.qr.QrScannerActivity
+import com.ma25.fixmaster.ui.report.ReportActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
